@@ -123,19 +123,26 @@ object ModRepository {
 
     fun startScanning() {
         scanning = true
-        if (settings.source == ChatSource.USERNAME) KeepAliveService.start(appContext)
+        if (settings.source == ChatSource.USERNAME) {
+            // след „Пауза“ страницата е затворена – отваряме я отново
+            if (LiveWeb.connectedUser.isEmpty() && settings.username.isNotBlank()) LiveWeb.connect(appContext, settings.username)
+            KeepAliveService.start(appContext)
+        }
         if (ticker == null) ticker = Executors.newSingleThreadScheduledExecutor()
         tickFuture?.cancel(false)
         tickFuture = ticker!!.scheduleWithFixedDelay({ tick() }, 1, 1, TimeUnit.SECONDS)
         changed()
     }
 
+    /** Пауза = спира всичко: четенето, AI, поздравите, известието и затваря страницата на лайва. */
     fun stopScanning() {
         scanning = false
         KeepAliveService.stop(appContext)
         tickFuture?.cancel(false)
         tickFuture = null
-        changed()
+        greetInFlight = false
+        LiveWeb.pause()
+        changedNow()
     }
 
     fun clearSession() {

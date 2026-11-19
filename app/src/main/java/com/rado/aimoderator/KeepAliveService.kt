@@ -42,7 +42,7 @@ class KeepAliveService : Service() {
         } else {
             startForeground(ID, n)
         }
-        return START_STICKY
+        return START_NOT_STICKY
     }
 
     companion object {

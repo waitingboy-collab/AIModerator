@@ -136,6 +136,15 @@ object LiveWeb {
         get(ctx).loadUrl("https://www.tiktok.com/login")
     }
 
+    /** „Пауза“: затваря страницата на лайва (без звук, без данни), „Старт“ я отваря пак. */
+    fun pause() {
+        if (connectedUser.isEmpty() && web?.url?.contains("/live") != true) return
+        web?.loadUrl("about:blank")
+        connectedUser = ""
+        itemsOnPage = 0
+        setStatus("На пауза")
+    }
+
     fun disconnect() {
         web?.loadUrl("about:blank")
         connectedUser = ""
@@ -270,6 +279,11 @@ object LiveScripts {
     if (node.matches(CFG.item)) handle(node);
     node.querySelectorAll(CFG.item).forEach(handle);
   }
+
+  // без звук от лайва – иначе може да влезе в микрофона на стрийма
+  function mute() { document.querySelectorAll('video,audio').forEach(function (m) { m.muted = true; m.volume = 0; }); }
+  mute();
+  setInterval(mute, 3000);
 
   // старите съобщения не се броят
   document.querySelectorAll(CFG.item).forEach(function (e) { seen.add(e); });

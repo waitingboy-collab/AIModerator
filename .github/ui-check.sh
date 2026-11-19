@@ -30,6 +30,15 @@ tap_text "Вход в TikTok"; sleep 15
 adb exec-out screencap -p > ui-out/3-browser.png
 tap_text "Скрий браузъра"; sleep 3
 adb exec-out screencap -p > ui-out/4-hidden.png
+# Старт → Пауза: всичко трябва да спре
+tap_text "Старт"; sleep 5
+adb shell dumpsys notification --noredact | grep -c "keepalive" > ui-out/notif-after-start.txt
+adb shell dumpsys activity services com.rado.aimoderator | grep -c KeepAliveService >> ui-out/notif-after-start.txt
+adb exec-out screencap -p > ui-out/5-started.png
+tap_text "Пауза"; sleep 5
+adb shell dumpsys notification --noredact | grep -c "keepalive" > ui-out/notif-after-pause.txt
+adb shell dumpsys activity services com.rado.aimoderator | grep -c KeepAliveService >> ui-out/notif-after-pause.txt
+adb exec-out screencap -p > ui-out/6-paused.png
 adb logcat -d > ui-out/logcat.txt
 grep -iE "AndroidRuntime|FATAL|aimoderator|chromium|WebView" ui-out/logcat.txt | tail -200 > ui-out/logcat-short.txt
 exit 0
