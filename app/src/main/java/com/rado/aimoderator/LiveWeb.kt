@@ -138,7 +138,7 @@ object LiveWeb {
 
     /** „Пауза“: затваря страницата на лайва (без звук, без данни), „Старт“ я отваря пак. */
     fun pause() {
-        if (connectedUser.isEmpty() && web?.url?.contains("/live") != true) return
+        if (connectedUser.isEmpty() && web?.url?.contains("/live") != true) { setStatus("На пауза"); return }
         web?.loadUrl("about:blank")
         connectedUser = ""
         itemsOnPage = 0
