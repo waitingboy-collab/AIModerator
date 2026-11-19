@@ -1,7 +1,10 @@
 package com.rado.aimoderator
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
+import android.content.MutableContextWrapper
+import android.widget.FrameLayout
 import android.os.Handler
 import android.os.Looper
 import android.view.ViewGroup
@@ -34,9 +37,13 @@ object LiveWeb {
     @Volatile var itemsOnPage = 0
         private set
 
+    private var wrapper: MutableContextWrapper? = null
+
     fun get(ctx: Context): WebView {
         web?.let { return it }
-        val w = WebView(ctx.applicationContext)
+        val wrap = MutableContextWrapper(ctx.applicationContext)
+        wrapper = wrap
+        val w = WebView(wrap)
         w.settings.apply {
             javaScriptEnabled = true
             domStorageEnabled = true
@@ -70,6 +77,49 @@ object LiveWeb {
     /** Махни WebView от стария екран, преди да го сложиш в нов. */
     fun detach() {
         (web?.parent as? ViewGroup)?.removeView(web)
+        wrapper?.baseContext = web?.context?.applicationContext ?: wrapper?.baseContext
+    }
+
+    /**
+     * Слага браузъра като отделен слой над екрана на приложението (не вътре в Compose –
+     * вътре в Compose той скриваше целия екран). Скрит = 1×1 пиксел, но жив.
+     */
+    fun attachTo(activity: Activity) {
+        val w = get(activity)
+        (w.parent as? ViewGroup)?.removeView(w)
+        wrapper?.baseContext = activity
+        val root = activity.findViewById<FrameLayout>(android.R.id.content) ?: return
+        root.addView(w, FrameLayout.LayoutParams(1, 1))
+        hide()
+    }
+
+    /** Показва браузъра в правоъгълника (в координати на прозореца). */
+    fun place(left: Float, top: Float, width: Float, height: Float) {
+        val w = web ?: return
+        val root = w.parent as? ViewGroup ?: return
+        if (width < 2f || height < 2f) { hide(); return }
+        val loc = IntArray(2)
+        root.getLocationInWindow(loc)
+        val lp = w.layoutParams
+        if (lp.width != width.toInt() || lp.height != height.toInt()) {
+            lp.width = width.toInt()
+            lp.height = height.toInt()
+            w.layoutParams = lp
+        }
+        w.translationX = left - loc[0]
+        w.translationY = top - loc[1]
+    }
+
+    fun hide() {
+        val w = web ?: return
+        val lp = w.layoutParams ?: return
+        if (lp.width != 1 || lp.height != 1) {
+            lp.width = 1
+            lp.height = 1
+            w.layoutParams = lp
+        }
+        w.translationX = 0f
+        w.translationY = 0f
     }
 
     fun connect(ctx: Context, username: String) {

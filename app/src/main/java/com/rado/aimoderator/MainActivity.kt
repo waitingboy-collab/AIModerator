@@ -81,7 +81,8 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.viewinterop.AndroidView
+import androidx.compose.ui.layout.boundsInWindow
+import androidx.compose.ui.layout.onGloballyPositioned
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -99,6 +100,13 @@ class MainActivity : ComponentActivity() {
         ) requestPermissions(arrayOf(Manifest.permission.POST_NOTIFICATIONS), 1)
 
         setContent { ModeratorTheme { App() } }
+        // вграденият браузър е отделен слой над екрана, не част от Compose
+        if (!noWebForTest) LiveWeb.attachTo(this)
+    }
+
+    override fun onDestroy() {
+        LiveWeb.detach()
+        super.onDestroy()
     }
 }
 
@@ -207,14 +215,6 @@ fun App() {
                     Tab.SETTINGS -> SettingsTab(tick)
                 }
             }
-            // Вграденият браузър е винаги прикачен (иначе спира да чете).
-            // Вижда се само в раздел „Лайв“, когато е отворен; иначе е висок 1 пиксел.
-            if (byUser && !noWebForTest) {
-                AndroidView(
-                    factory = { c -> LiveWeb.detach(); LiveWeb.get(c) },
-                    modifier = Modifier.fillMaxWidth().height(if (tab == Tab.LIVE && showBrowser) 380.dp else 1.dp)
-                )
-            }
         }
     }
 }
@@ -313,7 +313,18 @@ private fun LiveTab(tick: Int, showBrowser: Boolean, setShowBrowser: (Boolean) -
                     "Получени: ${ModRepository.diag.webEvents} · в чата на страницата: ${LiveWeb.itemsOnPage}",
                     color = Muted, fontSize = 12.sp
                 )
-                if (showBrowser) Text("Браузърът е най-долу ↓", color = Cyan, fontSize = 12.sp)
+                if (showBrowser) {
+                    // мястото, където се показва браузърът (той е отделен слой отгоре)
+                    Box(
+                        Modifier.fillMaxWidth().height(420.dp)
+                            .background(Color(0xFFF5F5F4))
+                            .onGloballyPositioned { c ->
+                                val r = c.boundsInWindow()
+                                LiveWeb.place(r.left, r.top, r.width, r.height)
+                            }
+                    )
+                    DisposableEffect(Unit) { onDispose { LiveWeb.hide() } }
+                }
                 if (diag.isNotEmpty()) {
                     Text(diag, fontSize = 11.sp, color = Muted, maxLines = 14, overflow = TextOverflow.Ellipsis)
                     Row {
