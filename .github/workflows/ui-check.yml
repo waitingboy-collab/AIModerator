@@ -4,6 +4,9 @@ name: UI check
 on:
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   ui:
     runs-on: ubuntu-latest
@@ -35,3 +38,14 @@ jobs:
         with:
           name: ui-check
           path: ui-out/
+      - name: Save results to branch ui-results
+        if: always()
+        run: |
+          cd ui-out
+          git init -q
+          git config user.name "ui-check"
+          git config user.email "ui-check@users.noreply.github.com"
+          git checkout -q -b ui-results
+          git add -A
+          git commit -q -m "UI check ${{ github.run_id }}"
+          git push -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" ui-results
