@@ -16,6 +16,11 @@ if [ -n "$B" ]; then
   adb exec-out screencap -p > ui-out/2-settings.png
   adb shell uiautomator dump /sdcard/ui2.xml && adb pull /sdcard/ui2.xml ui-out/ui2.xml
 fi
+# същото без вградения браузър
+adb shell am force-stop com.rado.aimoderator
+adb shell am start -n com.rado.aimoderator/.MainActivity --ez noweb true
+sleep 15
+adb exec-out screencap -p > ui-out/3-noweb.png
 adb logcat -d > ui-out/logcat.txt
 grep -iE "AndroidRuntime|FATAL|aimoderator|chromium|WebView" ui-out/logcat.txt | tail -200 > ui-out/logcat-short.txt
 exit 0

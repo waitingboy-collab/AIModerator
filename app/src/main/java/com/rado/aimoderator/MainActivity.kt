@@ -86,10 +86,14 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
+/** Само за проверка в емулатора: пуска екрана без вградения браузър. */
+var noWebForTest = false
+
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ModRepository.init(this)
+        noWebForTest = intent?.getBooleanExtra("noweb", false) == true
         if (Build.VERSION.SDK_INT >= 33 &&
             checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED
         ) requestPermissions(arrayOf(Manifest.permission.POST_NOTIFICATIONS), 1)
@@ -205,7 +209,7 @@ fun App() {
             }
             // Вграденият браузър е винаги прикачен (иначе спира да чете).
             // Вижда се само в раздел „Лайв“, когато е отворен; иначе е висок 1 пиксел.
-            if (byUser) {
+            if (byUser && !noWebForTest) {
                 AndroidView(
                     factory = { c -> LiveWeb.detach(); LiveWeb.get(c) },
                     modifier = Modifier.fillMaxWidth().height(if (tab == Tab.LIVE && showBrowser) 380.dp else 1.dp)
