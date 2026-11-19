@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">AI Модератор</string>
+    <string name="service_label">AI Модератор – чете чата</string>
+    <string name="service_description">Чете коментарите в TikTok LIVE, за да маркира обиди, заплахи, спам и ботове. Не трие и не блокира нищо. Пише в чата само поздрави и само ако си включил „Автоматично“ в раздел Поздрави.</string>
+</resources>
