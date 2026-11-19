@@ -87,6 +87,13 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
+/**
+ * Общ „часовник“ за екрана: всяка промяна в ModRepository и всяка секунда го увеличава.
+ * Всеки екран го ЧЕТЕ (uiTick.intValue), за да се прерисува – иначе Compose пропуска
+ * екраните, които не ползват подадения параметър, и бутоните остават със старо състояние.
+ */
+val uiTick = mutableIntStateOf(0)
+
 /** Само за проверка в емулатора: пуска екрана без вградения браузър. */
 var noWebForTest = false
 
@@ -153,9 +160,9 @@ private enum class Tab(val title: String) { LIVE("Лайв"), FLAGS("Сигна�
 @Composable
 fun App() {
     // всяко обновяване от ModRepository → ново рисуване
-    var tick by remember { mutableIntStateOf(0) }
+    var tick by uiTick
     DisposableEffect(Unit) {
-        val l: () -> Unit = { tick++ }
+        val l: () -> Unit = { uiTick.intValue++ }
         ModRepository.addListener(l)
         onDispose { ModRepository.removeListener(l) }
     }
@@ -222,6 +229,7 @@ fun App() {
 /** Кратък статус най-горе – два реда, за да остане място за разделите. */
 @Composable
 private fun StatusBar(tick: Int) {
+    @Suppress("UNUSED_VARIABLE") val refresh = uiTick.intValue
     val scanning = ModRepository.scanning
     val byUser = ModRepository.settings.source == ChatSource.USERNAME
     val connected = ModRepository.serviceConnected
@@ -271,6 +279,7 @@ private fun StatusLine(ok: Boolean, text: String, warn: Boolean = false) {
 
 @Composable
 private fun LiveTab(tick: Int, showBrowser: Boolean, setShowBrowser: (Boolean) -> Unit) {
+    @Suppress("UNUSED_VARIABLE") val refresh = uiTick.intValue
     val ctx = LocalContext.current
     val s = ModRepository.settings
     var user by remember { mutableStateOf(s.username) }
@@ -359,6 +368,7 @@ private fun LiveTab(tick: Int, showBrowser: Boolean, setShowBrowser: (Boolean) -
 
 @Composable
 private fun FlagsTab(tick: Int) {
+    @Suppress("UNUSED_VARIABLE") val refresh = uiTick.intValue
     val flagged = remember(tick) { ModRepository.engine.flagged() }
     if (flagged.isEmpty()) {
         Empty(
@@ -427,6 +437,7 @@ private fun FlowRowCompat(content: @Composable () -> Unit) {
 
 @Composable
 private fun ChatTab(tick: Int) {
+    @Suppress("UNUSED_VARIABLE") val refresh = uiTick.intValue
     var viewers by remember { mutableStateOf(false) }
     Column(Modifier.fillMaxSize()) {
         Row(Modifier.padding(horizontal = 12.dp), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
@@ -441,6 +452,7 @@ private fun ChatTab(tick: Int) {
 
 @Composable
 private fun MessagesList(tick: Int) {
+    @Suppress("UNUSED_VARIABLE") val refresh = uiTick.intValue
     val all = remember(tick) { ModRepository.engine.snapshot() }
     val raw = ModRepository.rawRows
     LazyColumn(contentPadding = PaddingValues(12.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
@@ -473,6 +485,7 @@ private fun MessagesList(tick: Int) {
 /** Показва на коя стъпка спира четенето. */
 @Composable
 private fun DiagCard() {
+    @Suppress("UNUSED_VARIABLE") val refresh = uiTick.intValue
     val ctx = LocalContext.current
     val d = ModRepository.diag
     val connected = ModRepository.serviceConnected
@@ -524,6 +537,7 @@ private fun DiagCard() {
 
 @Composable
 private fun ViewersTab(tick: Int) {
+    @Suppress("UNUSED_VARIABLE") val refresh = uiTick.intValue
     val viewers = remember(tick) { ModRepository.engine.viewerList() }
     if (viewers.isEmpty()) { Empty("Още няма зрители, които са писали."); return }
     LazyColumn(contentPadding = PaddingValues(12.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
@@ -552,6 +566,7 @@ private fun ViewersTab(tick: Int) {
 
 @Composable
 private fun GreetTab(tick: Int) {
+    @Suppress("UNUSED_VARIABLE") val refresh = uiTick.intValue
     val ctx = LocalContext.current
     val s = ModRepository.settings
     val g = s.engine.greet
@@ -652,6 +667,7 @@ private fun GreetTab(tick: Int) {
 
 @Composable
 private fun SettingsTab(tick: Int) {
+    @Suppress("UNUSED_VARIABLE") val refresh = uiTick.intValue
     val ctx = LocalContext.current
     val s = ModRepository.settings
     val e = s.engine
