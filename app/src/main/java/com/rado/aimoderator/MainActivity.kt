@@ -35,6 +35,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Face
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
@@ -133,7 +134,7 @@ private fun verdictColor(v: Verdict?): Color = when (v?.severity) {
 private val timeFmt = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
 private fun time(t: Long) = timeFmt.format(Date(t))
 
-private enum class Tab(val title: String) { FLAGS("Сигнали"), CHAT("Чат"), VIEWERS("Зрители"), GREET("Поздрави"), SETTINGS("Настройки") }
+private enum class Tab(val title: String) { LIVE("Лайв"), FLAGS("Сигнали"), CHAT("Чат"), GREET("Поздрави"), SETTINGS("Настройки") }
 
 // ---------- приложение ----------
 
@@ -153,7 +154,9 @@ fun App() {
             tick++
         }
     }
-    var tab by remember { mutableStateOf(Tab.FLAGS) }
+    var tab by remember { mutableStateOf(Tab.LIVE) }
+    var showBrowser by remember { mutableStateOf(false) }
+    val byUser = ModRepository.settings.source == ChatSource.USERNAME
 
     Scaffold(
         containerColor = Bg,
@@ -173,9 +176,9 @@ fun App() {
                         icon = {
                             Icon(
                                 when (t) {
+                                    Tab.LIVE -> Icons.Filled.Home
                                     Tab.FLAGS -> Icons.Filled.Warning
                                     Tab.CHAT -> Icons.Filled.List
-                                    Tab.VIEWERS -> Icons.Filled.Person
                                     Tab.GREET -> Icons.Filled.Face
                                     Tab.SETTINGS -> Icons.Filled.Settings
                                 },
@@ -189,67 +192,61 @@ fun App() {
         }
     ) { pad ->
         Column(Modifier.padding(pad).fillMaxSize()) {
-            StatusCard(tick)
-            if (ModRepository.settings.source == ChatSource.USERNAME) LivePanel(tick)
-            when (tab) {
-                Tab.FLAGS -> FlagsTab(tick)
-                Tab.CHAT -> ChatTab(tick)
-                Tab.VIEWERS -> ViewersTab(tick)
-                Tab.GREET -> GreetTab(tick)
-                Tab.SETTINGS -> SettingsTab(tick)
+            StatusBar(tick)
+            // разделът получава цялото останало място
+            Box(Modifier.weight(1f).fillMaxWidth()) {
+                when (tab) {
+                    Tab.LIVE -> LiveTab(tick, showBrowser) { showBrowser = it }
+                    Tab.FLAGS -> FlagsTab(tick)
+                    Tab.CHAT -> ChatTab(tick)
+                    Tab.GREET -> GreetTab(tick)
+                    Tab.SETTINGS -> SettingsTab(tick)
+                }
+            }
+            // Вграденият браузър е винаги прикачен (иначе спира да чете).
+            // Вижда се само в раздел „Лайв“, когато е отворен; иначе е висок 1 пиксел.
+            if (byUser) {
+                AndroidView(
+                    factory = { c -> LiveWeb.detach(); LiveWeb.get(c) },
+                    modifier = Modifier.fillMaxWidth().height(if (tab == Tab.LIVE && showBrowser) 380.dp else 1.dp)
+                )
             }
         }
     }
 }
 
+/** Кратък статус най-горе – два реда, за да остане място за разделите. */
 @Composable
-private fun StatusCard(tick: Int) {
-    val ctx = LocalContext.current
+private fun StatusBar(tick: Int) {
     val scanning = ModRepository.scanning
+    val byUser = ModRepository.settings.source == ChatSource.USERNAME
     val connected = ModRepository.serviceConnected
     val ai = ModRepository.aiStatus
-    val total = remember(tick) { ModRepository.engine.snapshot().size }
 
-    Card(
-        Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 4.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        shape = RoundedCornerShape(16.dp)
+    Row(
+        Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 2.dp),
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        Column(Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-            val byUser = ModRepository.settings.source == ChatSource.USERNAME
+        Column(Modifier.weight(1f)) {
             if (byUser) {
                 StatusLine(LiveWeb.itemsOnPage > 0, LiveWeb.status, warn = LiveWeb.connectedUser.isEmpty())
             } else {
-                StatusLine(
-                    connected,
-                    if (connected) "Чете екрана на TikTok" else "Достъпът за четене е изключен"
-                )
+                StatusLine(connected, if (connected) "Чете екрана на TikTok" else "Достъпът за четене е изключен")
             }
             StatusLine(
                 ai.state == AiState.READY || ai.state == AiState.WORKING,
                 when (ai.state) {
-                    AiState.OFF -> ai.message.ifEmpty { "AI е изключен" }
-                    AiState.READY -> "AI е готов (${ModRepository.settings.engine.ai.strictness.label.lowercase()})"
+                    AiState.OFF -> "Без AI – само филтър"
+                    AiState.READY -> "AI е готов"
                     else -> ai.message
                 },
                 warn = ai.state == AiState.RATE_LIMITED || ai.state == AiState.OFF
             )
-            val g = ModRepository.settings.engine.greet
-            if (g.mode != GreetMode.OFF) StatusLine(true, "Поздрави: ${g.mode.label.lowercase()}, на всеки ${g.minIntervalSec} сек.")
-            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                if (!byUser && !connected) {
-                    Button(onClick = { ctx.startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)) }) {
-                        Text("Включи достъпа")
-                    }
-                } else if (scanning) {
-                    OutlinedButton(onClick = { ModRepository.stopScanning() }) { Text("Пауза") }
-                } else {
-                    Button(onClick = { ModRepository.startScanning() }) { Text("Старт") }
-                }
-                TextButton(onClick = { ModRepository.clearSession() }) { Text("Нов лайв") }
-                Spacer(Modifier.weight(1f))
-                Text("$total съобщ.", color = Muted, fontSize = 13.sp)
-            }
+        }
+        if (scanning) {
+            OutlinedButton(onClick = { ModRepository.stopScanning() }) { Text("Пауза") }
+        } else {
+            Button(onClick = { ModRepository.startScanning() }) { Text("Старт") }
         }
     }
 }
@@ -258,71 +255,87 @@ private fun StatusCard(tick: Int) {
 private fun StatusLine(ok: Boolean, text: String, warn: Boolean = false) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         Box(
-            Modifier.size(10.dp).clip(CircleShape)
+            Modifier.size(9.dp).clip(CircleShape)
                 .background(if (ok) Ok else if (warn) Amber else Rose)
         )
         Spacer(Modifier.width(8.dp))
-        Text(text, fontSize = 14.sp)
+        Text(text, fontSize = 13.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
     }
 }
 
-// ---------- Връзка по username (вграден браузър) ----------
+// ---------- Лайв: връзка по username или проверка на екрана ----------
 
 @Composable
-private fun LivePanel(tick: Int) {
+private fun LiveTab(tick: Int, showBrowser: Boolean, setShowBrowser: (Boolean) -> Unit) {
     val ctx = LocalContext.current
     val s = ModRepository.settings
     var user by remember { mutableStateOf(s.username) }
-    var showBrowser by remember { mutableStateOf(LiveWeb.connectedUser.isEmpty()) }
     var diag by remember { mutableStateOf("") }
+    val total = remember(tick) { ModRepository.engine.snapshot().size }
+    val flagged = remember(tick) { ModRepository.engine.flagged().size }
 
-    Card(
-        Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 4.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        shape = RoundedCornerShape(16.dp)
+    Column(
+        Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(12.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
-        Column(Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                OutlinedTextField(
-                    value = user,
-                    onValueChange = {
-                        user = it.trim()
-                        ModRepository.update(ModRepository.settings.copy(username = it.trim().removePrefix("@")))
-                    },
-                    label = { Text("Твоят TikTok username") },
-                    prefix = { Text("@") },
-                    singleLine = true,
-                    modifier = Modifier.weight(1f)
+        if (s.source == ChatSource.USERNAME) {
+            Section("Свържи се с лайва") {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    OutlinedTextField(
+                        value = user,
+                        onValueChange = {
+                            user = it.trim()
+                            ModRepository.update(ModRepository.settings.copy(username = it.trim().removePrefix("@")))
+                        },
+                        label = { Text("Твоят TikTok username") },
+                        prefix = { Text("@") },
+                        singleLine = true,
+                        modifier = Modifier.weight(1f)
+                    )
+                    Spacer(Modifier.width(8.dp))
+                    Button(onClick = {
+                        LiveWeb.connect(ctx, user)
+                        if (!ModRepository.scanning) ModRepository.startScanning()
+                    }) { Text("Свържи") }
+                }
+                FlowRowCompat {
+                    TextButton(onClick = { LiveWeb.openLogin(ctx); setShowBrowser(true) }) { Text("Вход в TikTok") }
+                    TextButton(onClick = { setShowBrowser(!showBrowser) }) {
+                        Text(if (showBrowser) "Скрий браузъра" else "Покажи браузъра")
+                    }
+                    TextButton(onClick = { LiveWeb.diagnose { diag = LiveWeb.diagnosis } }) { Text("Диагностика") }
+                }
+                Text(
+                    "Получени: ${ModRepository.diag.webEvents} · в чата на страницата: ${LiveWeb.itemsOnPage}",
+                    color = Muted, fontSize = 12.sp
                 )
-                Spacer(Modifier.width(8.dp))
-                Button(onClick = {
-                    LiveWeb.connect(ctx, user)
-                    if (!ModRepository.scanning) ModRepository.startScanning()
-                }) { Text("Свържи") }
-            }
-            FlowRowCompat {
-                TextButton(onClick = { LiveWeb.openLogin(ctx); showBrowser = true }) { Text("Вход в TikTok") }
-                TextButton(onClick = { showBrowser = !showBrowser }) { Text(if (showBrowser) "Скрий браузъра" else "Покажи браузъра") }
-                TextButton(onClick = {
-                    LiveWeb.diagnose { diag = LiveWeb.diagnosis }
-                }) { Text("Диагностика") }
-            }
-            Text(
-                "Получени: ${ModRepository.diag.webEvents} · съобщения на страницата: ${LiveWeb.itemsOnPage}",
-                color = Muted, fontSize = 12.sp
-            )
-            if (diag.isNotEmpty()) {
-                Text(diag, fontSize = 11.sp, color = Muted, maxLines = 12, overflow = TextOverflow.Ellipsis)
-                Row {
-                    TextButton(onClick = { CopyReceiver.copyToClipboard(ctx, diag) }) { Text("Копирай диагностиката") }
-                    TextButton(onClick = { diag = "" }) { Text("Скрий") }
+                if (showBrowser) Text("Браузърът е най-долу ↓", color = Cyan, fontSize = 12.sp)
+                if (diag.isNotEmpty()) {
+                    Text(diag, fontSize = 11.sp, color = Muted, maxLines = 14, overflow = TextOverflow.Ellipsis)
+                    Row {
+                        TextButton(onClick = { CopyReceiver.copyToClipboard(ctx, diag) }) { Text("Копирай диагностиката") }
+                        TextButton(onClick = { diag = "" }) { Text("Скрий") }
+                    }
                 }
             }
-            // Браузърът винаги е прикачен (иначе спира да чете). Скрит = 1 пиксел висок.
-            AndroidView(
-                factory = { c -> LiveWeb.detach(); LiveWeb.get(c) },
-                modifier = Modifier.fillMaxWidth().height(if (showBrowser) 320.dp else 1.dp)
+        } else {
+            if (!ModRepository.serviceConnected) {
+                Button(onClick = { ctx.startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)) }) {
+                    Text("Включи достъпа")
+                }
+            }
+            DiagCard()
+        }
+
+        Section("Този лайв") {
+            Text("$total съобщения · $flagged сигнала", fontSize = 15.sp)
+            val g = s.engine.greet
+            Text(
+                if (g.mode == GreetMode.OFF) "Поздрави: изключени"
+                else "Поздрави: ${g.mode.label.lowercase()}, на всеки ${g.minIntervalSec} сек.",
+                color = Muted, fontSize = 13.sp
             )
+            TextButton(onClick = { ModRepository.clearSession() }) { Text("Нов лайв (изчисти всичко)") }
         }
     }
 }
@@ -399,10 +412,23 @@ private fun FlowRowCompat(content: @Composable () -> Unit) {
 
 @Composable
 private fun ChatTab(tick: Int) {
+    var viewers by remember { mutableStateOf(false) }
+    Column(Modifier.fillMaxSize()) {
+        Row(Modifier.padding(horizontal = 12.dp), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+            FilterChip(selected = !viewers, onClick = { viewers = false }, label = { Text("Съобщения") })
+            FilterChip(selected = viewers, onClick = { viewers = true }, label = { Text("Зрители") })
+        }
+        Box(Modifier.weight(1f)) {
+            if (viewers) ViewersTab(tick) else MessagesList(tick)
+        }
+    }
+}
+
+@Composable
+private fun MessagesList(tick: Int) {
     val all = remember(tick) { ModRepository.engine.snapshot() }
     val raw = ModRepository.rawRows
     LazyColumn(contentPadding = PaddingValues(12.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-        if (ModRepository.settings.source == ChatSource.SCREEN) item { DiagCard() }
         if (ModRepository.settings.debug && raw.isNotEmpty()) {
             item { Text("Сурови редове от екрана:", fontWeight = FontWeight.Bold, color = Cyan) }
             items(raw.take(20)) { Text(it, fontSize = 12.sp, color = Muted) }
@@ -639,7 +665,7 @@ private fun SettingsTab(tick: Int) {
             }
             Text(
                 if (s.source == ChatSource.USERNAME)
-                    "Пишеш своя username горе, приложението отваря лайва ти във вграден браузър и чете чата оттам. TikTok не трябва да е на екрана."
+                    "Пишеш своя username в раздел Лайв, приложението отваря лайва ти във вграден браузър и чете чата оттам. TikTok не трябва да е на екрана."
                 else
                     "Чете чата от отвореното приложение TikTok на този телефон. Иска разрешение за достъпност.",
                 color = Muted, fontSize = 13.sp
