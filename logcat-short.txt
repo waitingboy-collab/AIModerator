@@ -1,0 +1,200 @@
+11-27 19:22:16.129  2385  2622 I cr_VariationsUtils: Failed reading seed file "/data/user/0/com.rado.aimoderator/app_webview/variations_seed"
+11-27 19:22:16.308  1046  1046 D CarrierSvcBindHelper: onPackageModified: com.rado.aimoderator
+11-27 19:22:16.314   522   550 I ActivityManager: Start proc 2636:com.google.android.webview:webview_service/u0a133 for service {com.google.android.webview/org.chromium.android_webview.services.VariationsSeedServer}
+11-27 19:22:16.360   522   550 I ActivityManager: Start proc 2674:com.android.chrome/u0a149 for service {com.android.chrome/org.chromium.chrome.browser.customtabs.CustomTabsConnectionService}
+11-27 19:22:16.376  1046  1344 D ImsResolver: maybeAddedImsService, packageName: com.rado.aimoderator
+11-27 19:22:16.692   522   550 I ActivityManager: Start proc 2687:com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0/u0ai9000 for  {com.rado.aimoderator/org.chromium.content.app.SandboxedProcessService0:0}
+11-27 19:22:16.702  2636  2636 I webview_service: Using CollectorTypeCC GC.
+11-27 19:22:16.702  2636  2636 W webview_service: Unexpected CPU variant for x86: x86_64.
+11-27 19:22:16.702  2636  2636 W webview_service: Known variants: atom, sandybridge, silvermont, goldmont, goldmont-plus, tremont, kabylake, default
+11-27 19:22:16.709  2636  2636 E webview_service: Not starting debugger since process cannot load the jdwp agent.
+11-27 19:22:16.873  2636  2636 W webview_service: Entry not found
+11-27 19:22:16.873  2636  2636 D nativeloader: Configuring clns-6 for other apk /data/app/~~R3QvZYfUZa_pwDJnD5W5qQ==/com.google.android.trichromelibrary_567263637-x0E3NFjeYovfeFXKXsVQ5Q==/TrichromeLibrary.apk. target_sdk_version=34, uses_libraries=ALL, library_path=/data/app/~~hG9HBwjo3rfpaNtNlpMeJQ==/com.google.android.webview-P7G1gD1rCSfh571y5WDOmA==/lib/x86_64:/data/app/~~hG9HBwjo3rfpaNtNlpMeJQ==/com.google.android.webview-P7G1gD1rCSfh571y5WDOmA==/WebViewGoogle.apk!/lib/x86_64:/data/app/~~R3QvZYfUZa_pwDJnD5W5qQ==/com.google.android.trichromelibrary_567263637-x0E3NFjeYovfeFXKXsVQ5Q==/TrichromeLibrary.apk!/lib/x86_64, permitted_path=/data:/mnt/expand:/data/user/0/com.google.android.webview
+11-27 19:22:16.875  2636  2636 D nativeloader: Configuring clns-7 for other apk /data/app/~~hG9HBwjo3rfpaNtNlpMeJQ==/com.google.android.webview-P7G1gD1rCSfh571y5WDOmA==/WebViewGoogle.apk. target_sdk_version=34, uses_libraries=, library_path=/data/app/~~hG9HBwjo3rfpaNtNlpMeJQ==/com.google.android.webview-P7G1gD1rCSfh571y5WDOmA==/lib/x86_64:/data/app/~~hG9HBwjo3rfpaNtNlpMeJQ==/com.google.android.webview-P7G1gD1rCSfh571y5WDOmA==/WebViewGoogle.apk!/lib/x86_64:/data/app/~~R3QvZYfUZa_pwDJnD5W5qQ==/com.google.android.trichromelibrary_567263637-x0E3NFjeYovfeFXKXsVQ5Q==/TrichromeLibrary.apk!/lib/x86_64, permitted_path=/data:/mnt/expand:/data/user/0/com.google.android.webview
+11-27 19:22:16.974  2636  2636 V GraphicsEnvironment: ANGLE GameManagerService for com.google.android.webview: false
+11-27 19:22:16.974  2636  2636 V GraphicsEnvironment: com.google.android.webview is not listed in per-application setting
+11-27 19:22:16.975  2687  2687 I cr_WebViewApkApp: Launched version=113.0.5672.136 minSdkVersion=29 isBundle=false processName=com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0
+11-27 19:22:16.983  1778  2222 I WebViewFactory: Loading com.google.android.webview version 113.0.5672.136 (code 567263637)
+11-27 19:22:17.011  2636  2636 I cr_WebViewApkApp: Launched version=113.0.5672.136 minSdkVersion=29 isBundle=false processName=com.google.android.webview:webview_service
+11-27 19:22:17.363  1778  2222 D nativeloader: Configuring clns-8 for other apk /data/app/~~R3QvZYfUZa_pwDJnD5W5qQ==/com.google.android.trichromelibrary_567263637-x0E3NFjeYovfeFXKXsVQ5Q==/TrichromeLibrary.apk. target_sdk_version=34, uses_libraries=ALL, library_path=/data/app/~~hG9HBwjo3rfpaNtNlpMeJQ==/com.google.android.webview-P7G1gD1rCSfh571y5WDOmA==/lib/x86_64:/data/app/~~hG9HBwjo3rfpaNtNlpMeJQ==/com.google.android.webview-P7G1gD1rCSfh571y5WDOmA==/WebViewGoogle.apk!/lib/x86_64:/data/app/~~R3QvZYfUZa_pwDJnD5W5qQ==/com.google.android.trichromelibrary_567263637-x0E3NFjeYovfeFXKXsVQ5Q==/TrichromeLibrary.apk!/lib/x86_64, permitted_path=/data:/mnt/expand
+11-27 19:22:17.364  1778  2222 D nativeloader: Configuring clns-9 for other apk /data/app/~~hG9HBwjo3rfpaNtNlpMeJQ==/com.google.android.webview-P7G1gD1rCSfh571y5WDOmA==/WebViewGoogle.apk. target_sdk_version=34, uses_libraries=, library_path=/data/app/~~hG9HBwjo3rfpaNtNlpMeJQ==/com.google.android.webview-P7G1gD1rCSfh571y5WDOmA==/lib/x86_64:/data/app/~~hG9HBwjo3rfpaNtNlpMeJQ==/com.google.android.webview-P7G1gD1rCSfh571y5WDOmA==/WebViewGoogle.apk!/lib/x86_64:/data/app/~~R3QvZYfUZa_pwDJnD5W5qQ==/com.google.android.trichromelibrary_567263637-x0E3NFjeYovfeFXKXsVQ5Q==/TrichromeLibrary.apk!/lib/x86_64, permitted_path=/data:/mnt/expand
+11-27 19:22:17.579  2385  2823 W chromium: [WARNING:dns_config_service_android.cc(115)] Failed to read DnsConfig.
+11-27 19:22:17.975  2385  2823 E chromium: [ERROR:simple_file_enumerator.cc(21)] opendir /data/user/0/com.rado.aimoderator/cache/WebView/Default/HTTP Cache/Code Cache/wasm: No such file or directory (2)
+11-27 19:22:17.976  2385  2823 E chromium: [ERROR:simple_index_file.cc(614)] Could not reconstruct index from disk
+11-27 19:22:17.976  2385  2822 E chromium: [ERROR:simple_file_enumerator.cc(21)] opendir /data/user/0/com.rado.aimoderator/cache/WebView/Default/HTTP Cache/Code Cache/js: No such file or directory (2)
+11-27 19:22:17.976  2385  2822 E chromium: [ERROR:simple_index_file.cc(614)] Could not reconstruct index from disk
+11-27 19:22:18.231  1574  1574 I AiAiEcho: AppFetcherImplV2 updateApps package:[com.rado.aimoderator], userId:[0], reason:[package is added.].
+11-27 19:22:18.382  1778  3002 I cr_VariationsUtils: Failed reading seed file "/data/user/0/com.google.android.googlequicksearchbox/app_webview/variations_seed_new"
+11-27 19:22:18.382  1778  3002 I cr_VariationsUtils: Failed reading seed file "/data/user/0/com.google.android.googlequicksearchbox/app_webview/variations_seed"
+11-27 19:22:18.440  1574  1574 I AiAiEcho: AppFetcherImpl onPackageChanged com.rado.aimoderator.
+11-27 19:22:18.441  1574  2560 I AiAiEcho: AppIndexer Package:[com.rado.aimoderator] UserProfile:[0] Enabled:[true].
+11-27 19:22:18.441  1574  2560 I AiAiEcho: AppFetcherImplV2 updateApps package:[com.rado.aimoderator], userId:[0], reason:[package is updated.].
+11-27 19:22:19.135  3069  3069 I iew:webview_apk: Using CollectorTypeCC GC.
+11-27 19:22:19.135  3069  3069 W iew:webview_apk: Unexpected CPU variant for x86: x86_64.
+11-27 19:22:19.135  3069  3069 W iew:webview_apk: Known variants: atom, sandybridge, silvermont, goldmont, goldmont-plus, tremont, kabylake, default
+11-27 19:22:19.182   522  1949 D CoreBackPreview: Window{830df5 u0 com.rado.aimoderator/com.rado.aimoderator.MainActivity}: Setting back callback OnBackInvokedCallbackInfo{mCallback=android.window.IOnBackInvokedCallback$Stub$Proxy@6e85c00, mPriority=0, mIsAnimationCallback=false}
+11-27 19:22:19.192   522   550 I ActivityManager: Start proc 3069:com.google.android.webview:webview_apk/u0a133 for service {com.google.android.webview/org.chromium.android_webview.nonembedded.AwComponentUpdateService}
+11-27 19:22:19.278   522   780 W JobServiceContext: Sending onNetworkChanged for a job that isn't started. JobStatus{1b7ead9 #u0a133/110 com.google.android.webview/org.chromium.android_webview.nonembedded.AwComponentUpdateService u=0 s=10133 NET READY}
+11-27 19:22:19.448   522   549 D SystemServerTimingAsync: ssm.onUnlockedUser-0_com.android.server.webkit.WebViewUpdateService
+11-27 19:22:19.448   522   549 V SystemServerTimingAsync: ssm.onUnlockedUser-0_com.android.server.webkit.WebViewUpdateService took to complete: 0ms
+11-27 19:22:19.558  3069  3069 E iew:webview_apk: Not starting debugger since process cannot load the jdwp agent.
+11-27 19:22:20.128  3069  3069 W iew:webview_apk: Entry not found
+11-27 19:22:20.134  3069  3069 D nativeloader: Configuring clns-6 for other apk /data/app/~~R3QvZYfUZa_pwDJnD5W5qQ==/com.google.android.trichromelibrary_567263637-x0E3NFjeYovfeFXKXsVQ5Q==/TrichromeLibrary.apk. target_sdk_version=34, uses_libraries=ALL, library_path=/data/app/~~hG9HBwjo3rfpaNtNlpMeJQ==/com.google.android.webview-P7G1gD1rCSfh571y5WDOmA==/lib/x86_64:/data/app/~~hG9HBwjo3rfpaNtNlpMeJQ==/com.google.android.webview-P7G1gD1rCSfh571y5WDOmA==/WebViewGoogle.apk!/lib/x86_64:/data/app/~~R3QvZYfUZa_pwDJnD5W5qQ==/com.google.android.trichromelibrary_567263637-x0E3NFjeYovfeFXKXsVQ5Q==/TrichromeLibrary.apk!/lib/x86_64, permitted_path=/data:/mnt/expand:/data/user/0/com.google.android.webview
+11-27 19:22:20.139  3069  3069 D nativeloader: Configuring clns-7 for other apk /data/app/~~hG9HBwjo3rfpaNtNlpMeJQ==/com.google.android.webview-P7G1gD1rCSfh571y5WDOmA==/WebViewGoogle.apk. target_sdk_version=34, uses_libraries=, library_path=/data/app/~~hG9HBwjo3rfpaNtNlpMeJQ==/com.google.android.webview-P7G1gD1rCSfh571y5WDOmA==/lib/x86_64:/data/app/~~hG9HBwjo3rfpaNtNlpMeJQ==/com.google.android.webview-P7G1gD1rCSfh571y5WDOmA==/WebViewGoogle.apk!/lib/x86_64:/data/app/~~R3QvZYfUZa_pwDJnD5W5qQ==/com.google.android.trichromelibrary_567263637-x0E3NFjeYovfeFXKXsVQ5Q==/TrichromeLibrary.apk!/lib/x86_64, permitted_path=/data:/mnt/expand:/data/user/0/com.google.android.webview
+11-27 19:22:20.272  3069  3069 V GraphicsEnvironment: ANGLE GameManagerService for com.google.android.webview: false
+11-27 19:22:20.272  3069  3069 V GraphicsEnvironment: com.google.android.webview is not listed in per-application setting
+11-27 19:22:20.274  3069  3069 I cr_WebViewApkApp: Launched version=113.0.5672.136 minSdkVersion=29 isBundle=false processName=com.google.android.webview:webview_apk
+11-27 19:22:20.424   522   572 I AppsFilter: interaction: PackageSetting{a01a444 com.rado.aimoderator/10192} -> PackageSetting{6615e62 com.google.android.youtube/10139} BLOCKED
+11-27 19:22:20.425   522   572 I AppsFilter: interaction: PackageSetting{a01a444 com.rado.aimoderator/10192} -> PackageSetting{ad80544 com.google.android.googlequicksearchbox/10132} BLOCKED
+11-27 19:22:20.426   522   572 I AppsFilter: interaction: PackageSetting{a01a444 com.rado.aimoderator/10192} -> PackageSetting{41a3b1a com.google.android.as/10125} BLOCKED
+11-27 19:22:20.441   522   572 I AppsFilter: interaction: PackageSetting{a01a444 com.rado.aimoderator/10192} -> PackageSetting{f231b0 com.google.android.gm/10142} BLOCKED
+11-27 19:22:20.474   522   572 I AppsFilter: interaction: PackageSetting{a01a444 com.rado.aimoderator/10192} -> PackageSetting{7d5bb58 com.google.android.devicelockcontroller/10172} BLOCKED
+11-27 19:22:20.482   522   572 I AppsFilter: interaction: PackageSetting{a01a444 com.rado.aimoderator/10192} -> PackageSetting{2708361 com.google.android.dialer/10128} BLOCKED
+11-27 19:22:20.483   522   572 I AppsFilter: interaction: PackageSetting{a01a444 com.rado.aimoderator/10192} -> PackageSetting{ff5ae86 com.google.android.contacts/10154} BLOCKED
+11-27 19:22:20.483   522   572 I AppsFilter: interaction: PackageSetting{a01a444 com.rado.aimoderator/10192} -> PackageSetting{86c5347 com.google.android.partnersetup/10124} BLOCKED
+11-27 19:22:20.483   522   572 I AppsFilter: interaction: PackageSetting{a01a444 com.rado.aimoderator/10192} -> PackageSetting{7694774 com.google.android.apps.youtube.music/10156} BLOCKED
+11-27 19:22:20.516   522   572 I AppsFilter: interaction: PackageSetting{a01a444 com.rado.aimoderator/10192} -> PackageSetting{e9d3a30 com.google.android.cellbroadcastreceiver/10176} BLOCKED
+11-27 19:22:20.543   522   572 I AppsFilter: interaction: PackageSetting{a01a444 com.rado.aimoderator/10192} -> PackageSetting{bd3c95c com.google.android.inputmethod.latin/10147} BLOCKED
+11-27 19:22:21.174   522   539 W ziparchive: Unable to open '/data/app/~~jB9trjvf0PJKNsLA9qOniw==/com.rado.aimoderator-6spTVnqk-cSUliI5wn0xaw==/base.dm': No such file or directory
+11-27 19:22:21.175   522   539 I ActivityTaskManager: Displayed com.rado.aimoderator/.MainActivity for user 0: +7s318ms
+11-27 19:22:21.253   522  1950 D CoreBackPreview: Window{ca82904 u0 Splash Screen com.rado.aimoderator EXITING}: Setting back callback null
+11-27 19:22:21.306   522  2374 W InputManager-JNI: Input channel object 'ca82904 Splash Screen com.rado.aimoderator (client)' was disposed without first being removed with the input manager!
+11-27 19:22:21.343  3069  3292 W cr_AWNetworkFetcherTask: 	at org.chromium.android_webview.nonembedded.NetworkFetcherTask.download(chromium-TrichromeWebViewGoogle6432.apk-stable-567263637:48)
+11-27 19:22:21.389   522  2665 I ImeTracker: com.rado.aimoderator:41de4d4d: onRequestHide at ORIGIN_SERVER_HIDE_INPUT reason HIDE_UNSPECIFIED_WINDOW
+11-27 19:22:21.389   522  2665 I ImeTracker: com.rado.aimoderator:41de4d4d: onCancelled at PHASE_SERVER_SHOULD_HIDE
+11-27 19:22:21.697  1499  1499 I GoogleInputMethodService: GoogleInputMethodService.onStartInput():1877 onStartInput(EditorInfo{inputType=0x0(NULL) imeOptions=0x0 privateImeOptions=null actionName=UNSPECIFIED actionLabel=null actionId=0 initialSelStart=-1 initialSelEnd=-1 initialCapsMode=0x0 hintText=null label=null packageName=com.rado.aimoderator fieldId=0 fieldName=null extras=null}, false)
+11-27 19:22:24.032  2385  3521 D ProfileInstaller: Installing profile for com.rado.aimoderator
+11-27 19:22:24.860  2385  2436 I ado.aimoderator: Background concurrent copying GC freed 95513(4710KB) AllocSpace objects, 3(124KB) LOS objects, 49% free, 5398KB/10MB, paused 1.745ms,1.957ms total 190.894ms
+11-27 19:22:25.033   522  3634 D SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.webkit.WebViewUpdateService
+11-27 19:22:25.033   522  3634 V SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.webkit.WebViewUpdateService took to complete: 0ms
+11-27 19:22:26.604   522  3496 I AppsFilter: interaction: PackageSetting{a01a444 com.rado.aimoderator/10192} -> PackageSetting{f036449 com.google.android.gm/10142} BLOCKED
+11-27 19:22:27.612   522   747 I AppsFilter: interaction: PackageSetting{a01a444 com.rado.aimoderator/10192} -> PackageSetting{a61dade com.google.android.settings.intelligence/10118} BLOCKED
+11-27 19:22:27.613   522  2009 I AppsFilter: interaction: PackageSetting{a01a444 com.rado.aimoderator/10192} -> PackageSetting{20e04bf com.google.android.settings.intelligence/10118} BLOCKED
+11-27 19:22:28.439  1387  3078 I FontLog : Package com.rado.aimoderator has no metadata [CONTEXT service_id=132 ]
+11-27 19:22:28.445  1426  1483 I BlockstoreStorage: Clearing Blockstore Data for package com.rado.aimoderator [CONTEXT service_id=258 ]
+11-27 19:22:30.597   522   572 I AppsFilter: interaction: PackageSetting{a01a444 com.rado.aimoderator/10192} -> PackageSetting{b65bbb4 com.google.android.googlequicksearchbox/10132} BLOCKED
+11-27 19:22:30.597   522   572 I AppsFilter: interaction: PackageSetting{a01a444 com.rado.aimoderator/10192} -> PackageSetting{ab9f3dd com.android.camera2/10145} BLOCKED
+11-27 19:22:30.597   522   572 I AppsFilter: interaction: PackageSetting{a01a444 com.rado.aimoderator/10192} -> PackageSetting{3685b52 com.google.android.gm/10142} BLOCKED
+11-27 19:22:30.597   522   572 I AppsFilter: interaction: PackageSetting{a01a444 com.rado.aimoderator/10192} -> PackageSetting{2ae0e23 com.google.android.devicelockcontroller/10172} BLOCKED
+11-27 19:22:30.597   522   572 I AppsFilter: interaction: PackageSetting{a01a444 com.rado.aimoderator/10192} -> PackageSetting{e7cdf20 com.google.android.rkpdapp/10177} BLOCKED
+11-27 19:22:30.598   522   572 I AppsFilter: interaction: PackageSetting{a01a444 com.rado.aimoderator/10192} -> PackageSetting{58cda9e com.google.android.contacts/10154} BLOCKED
+11-27 19:22:30.598   522   572 I AppsFilter: interaction: PackageSetting{a01a444 com.rado.aimoderator/10192} -> PackageSetting{bc9697f com.google.android.settings.intelligence/10118} BLOCKED
+11-27 19:22:30.598   522   572 I AppsFilter: interaction: PackageSetting{a01a444 com.rado.aimoderator/10192} -> PackageSetting{8137a4 com.google.android.projection.gearhead/10123} BLOCKED
+11-27 19:22:30.598   522   572 I AppsFilter: interaction: PackageSetting{a01a444 com.rado.aimoderator/10192} -> PackageSetting{a20cd4c com.google.android.apps.youtube.music/10156} BLOCKED
+11-27 19:22:30.736  1047  1065 D PrefCtrlListHelper: Could not find Context-only controller for pref: com.android.settings.deviceinfo.legal.WebViewLicensePreferenceController
+11-27 19:22:31.535   522   608 D ActivityManager: freezing 3069 com.google.android.webview:webview_apk
+11-27 19:22:33.756   522   608 D ActivityManager: freezing 2636 com.google.android.webview:webview_service
+11-27 19:22:35.041  4432  4432 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+11-27 19:22:35.070  4432  4432 I AndroidRuntime: Using default boot image
+11-27 19:22:35.070  4432  4432 I AndroidRuntime: Leaving lock profiling enabled
+11-27 19:22:35.264  4432  4432 D nativeloader: InitDefaultPublicLibraries for_preload=1: libandroid.so:libaaudio.so:libamidi.so:libbinder_ndk.so:libc.so:libcamera2ndk.so:libdl.so:libEGL.so:libGLESv1_CM.so:libGLESv2.so:libGLESv3.so:libicu.so:libicui18n.so:libicuuc.so:libjnigraphics.so:liblog.so:libmediandk.so:libm.so:libnativehelper.so:libnativewindow.so:libOpenMAXAL.so:libOpenSLES.so:libRS.so:libstdc++.so:libsync.so:libvulkan.so:libwebviewchromium_plat_support.so:libz.so
+11-27 19:22:35.359  4432  4432 D AndroidRuntime: Calling main entry com.android.commands.uiautomator.Launcher
+11-27 19:22:36.917  4432  4432 D AndroidRuntime: Shutting down VM
+11-27 19:22:38.451   522   542 W ActivityTaskManager: Activity top resumed state loss timeout for ActivityRecord{f9792af u0 com.rado.aimoderator/.MainActivity t8}
+11-27 19:22:38.894   522   539 V WindowManager:     info={id=6 t=TO_FRONT f=0x80 trk=0 r=[0@Point(0, 0)] c=[{WCT{RemoteToken{2ce3c9a Task{b2d80cd #1 type=home}}} m=TO_FRONT f=SHOW_WALLPAPER|MOVE_TO_TOP leash=Surface(name=Task=1)/@0xaaef82f sb=Rect(0, 0 - 320, 640) eb=Rect(0, 0 - 320, 640) d=0},{WCT{RemoteToken{c0ed45 Task{c5a619a #8 type=standard A=10192:com.rado.aimoderator}}} m=TO_BACK f=NONE leash=Surface(name=Task=8)/@0xebe558e sb=Rect(0, 0 - 320, 640) eb=Rect(0, 0 - 320, 640) d=0},{null m=TO_FRONT f=IS_WALLPAPER leash=Surface(name=WallpaperWindowToken{301e7c6 token=android.os.Binder@df365fa})/@0xdb6c189 sb=Rect(0, 0 - 320, 640) eb=Rect(0, 0 - 320, 640) d=0}]}
+11-27 19:22:40.856   522   572 I AppsFilter: interaction: PackageSetting{a01a444 com.rado.aimoderator/10192} -> PackageSetting{85ff7e com.google.android.youtube/10139} BLOCKED
+11-27 19:22:40.857   522   572 I AppsFilter: interaction: PackageSetting{a01a444 com.rado.aimoderator/10192} -> PackageSetting{65a5cdf com.google.android.apps.messaging/10129} BLOCKED
+11-27 19:22:40.857   522   572 I AppsFilter: interaction: PackageSetting{a01a444 com.rado.aimoderator/10192} -> PackageSetting{3fad2c com.google.android.as/10125} BLOCKED
+11-27 19:22:40.857   522   572 I AppsFilter: interaction: PackageSetting{a01a444 com.rado.aimoderator/10192} -> PackageSetting{5a6c1f6 com.google.android.apps.maps/10155} BLOCKED
+11-27 19:22:43.177  4663  4663 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+11-27 19:22:43.185  4663  4663 I AndroidRuntime: Using default boot image
+11-27 19:22:43.185  4663  4663 I AndroidRuntime: Leaving lock profiling enabled
+11-27 19:22:43.296  4663  4663 D nativeloader: InitDefaultPublicLibraries for_preload=1: libandroid.so:libaaudio.so:libamidi.so:libbinder_ndk.so:libc.so:libcamera2ndk.so:libdl.so:libEGL.so:libGLESv1_CM.so:libGLESv2.so:libGLESv3.so:libicu.so:libicui18n.so:libicuuc.so:libjnigraphics.so:liblog.so:libmediandk.so:libm.so:libnativehelper.so:libnativewindow.so:libOpenMAXAL.so:libOpenSLES.so:libRS.so:libstdc++.so:libsync.so:libvulkan.so:libwebviewchromium_plat_support.so:libz.so
+11-27 19:22:43.344  4663  4663 D AndroidRuntime: Calling main entry com.android.commands.uiautomator.Launcher
+11-27 19:22:44.539  4663  4663 D AndroidRuntime: Shutting down VM
+11-27 19:22:45.477  4710  4710 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+11-27 19:22:45.480  4710  4710 I AndroidRuntime: Using default boot image
+11-27 19:22:45.480  4710  4710 I AndroidRuntime: Leaving lock profiling enabled
+11-27 19:22:45.534  4710  4710 D nativeloader: InitDefaultPublicLibraries for_preload=1: libandroid.so:libaaudio.so:libamidi.so:libbinder_ndk.so:libc.so:libcamera2ndk.so:libdl.so:libEGL.so:libGLESv1_CM.so:libGLESv2.so:libGLESv3.so:libicu.so:libicui18n.so:libicuuc.so:libjnigraphics.so:liblog.so:libmediandk.so:libm.so:libnativehelper.so:libnativewindow.so:libOpenMAXAL.so:libOpenSLES.so:libRS.so:libstdc++.so:libsync.so:libvulkan.so:libwebviewchromium_plat_support.so:libz.so
+11-27 19:22:45.556  4710  4710 D AndroidRuntime: Calling main entry com.android.commands.uiautomator.Launcher
+11-27 19:22:46.649  4710  4710 D AndroidRuntime: Shutting down VM
+11-27 19:22:47.676   522   539 V WindowManager:     info={id=7 t=TO_FRONT f=0x80 trk=0 r=[0@Point(0, 0)] c=[{WCT{RemoteToken{2ce3c9a Task{b2d80cd #1 type=home}}} m=TO_FRONT f=SHOW_WALLPAPER|MOVE_TO_TOP leash=Surface(name=Task=1)/@0xaaef82f sb=Rect(0, 0 - 320, 640) eb=Rect(0, 0 - 320, 640) d=0},{WCT{RemoteToken{c0ed45 Task{c5a619a #8 type=standard A=10192:com.rado.aimoderator}}} m=TO_BACK f=NONE leash=Surface(name=Task=8)/@0xebe558e sb=Rect(0, 0 - 320, 640) eb=Rect(0, 0 - 320, 640) d=0},{null m=TO_FRONT f=IS_WALLPAPER leash=Surface(name=WallpaperWindowToken{301e7c6 token=android.os.Binder@df365fa})/@0xdb6c189 sb=Rect(0, 0 - 320, 640) eb=Rect(0, 0 - 320, 640) d=0}]}
+11-27 19:22:48.743   522   550 I ActivityManager: Start proc 4871:com.google.android.webview/u0a133 for broadcast {com.google.android.webview/com.google.android.libraries.phenotype.client.stable.PhenotypeUpdateBackgroundBroadcastReceiver}
+11-27 19:22:48.744  4871  4871 I android.webview: Using CollectorTypeCC GC.
+11-27 19:22:48.744  4871  4871 W android.webview: Unexpected CPU variant for x86: x86_64.
+11-27 19:22:48.744  4871  4871 W android.webview: Known variants: atom, sandybridge, silvermont, goldmont, goldmont-plus, tremont, kabylake, default
+11-27 19:22:48.746  4871  4871 E android.webview: Not starting debugger since process cannot load the jdwp agent.
+11-27 19:22:48.769  4871  4871 W android.webview: Entry not found
+11-27 19:22:48.771  4871  4871 D nativeloader: Configuring clns-6 for other apk /data/app/~~R3QvZYfUZa_pwDJnD5W5qQ==/com.google.android.trichromelibrary_567263637-x0E3NFjeYovfeFXKXsVQ5Q==/TrichromeLibrary.apk. target_sdk_version=34, uses_libraries=ALL, library_path=/data/app/~~hG9HBwjo3rfpaNtNlpMeJQ==/com.google.android.webview-P7G1gD1rCSfh571y5WDOmA==/lib/x86_64:/data/app/~~hG9HBwjo3rfpaNtNlpMeJQ==/com.google.android.webview-P7G1gD1rCSfh571y5WDOmA==/WebViewGoogle.apk!/lib/x86_64:/data/app/~~R3QvZYfUZa_pwDJnD5W5qQ==/com.google.android.trichromelibrary_567263637-x0E3NFjeYovfeFXKXsVQ5Q==/TrichromeLibrary.apk!/lib/x86_64, permitted_path=/data:/mnt/expand:/data/user/0/com.google.android.webview
+11-27 19:22:48.779  4871  4871 D nativeloader: Configuring clns-7 for other apk /data/app/~~hG9HBwjo3rfpaNtNlpMeJQ==/com.google.android.webview-P7G1gD1rCSfh571y5WDOmA==/WebViewGoogle.apk. target_sdk_version=34, uses_libraries=, library_path=/data/app/~~hG9HBwjo3rfpaNtNlpMeJQ==/com.google.android.webview-P7G1gD1rCSfh571y5WDOmA==/lib/x86_64:/data/app/~~hG9HBwjo3rfpaNtNlpMeJQ==/com.google.android.webview-P7G1gD1rCSfh571y5WDOmA==/WebViewGoogle.apk!/lib/x86_64:/data/app/~~R3QvZYfUZa_pwDJnD5W5qQ==/com.google.android.trichromelibrary_567263637-x0E3NFjeYovfeFXKXsVQ5Q==/TrichromeLibrary.apk!/lib/x86_64, permitted_path=/data:/mnt/expand:/data/user/0/com.google.android.webview
+11-27 19:22:48.790  4871  4871 V GraphicsEnvironment: ANGLE GameManagerService for com.google.android.webview: false
+11-27 19:22:48.790  4871  4871 V GraphicsEnvironment: com.google.android.webview is not listed in per-application setting
+11-27 19:22:48.791  4871  4871 I cr_WebViewApkApp: Launched version=113.0.5672.136 minSdkVersion=29 isBundle=false processName=com.google.android.webview
+11-27 19:22:49.933  4259  4906 I cr_CronetUrlRequestContext: destroyNativeStreamLocked org.chromium.net.impl.CronetBidirectionalStream@de69338
+11-27 19:22:49.959   522  2665 I AppsFilter: interaction: PackageSetting{a01a444 com.rado.aimoderator/10192} -> PackageSetting{f9a2014 com.google.android.settings.intelligence/10118} BLOCKED
+11-27 19:22:50.256  1047  4116 D PrefCtrlListHelper: Could not find Context-only controller for pref: com.android.settings.deviceinfo.legal.WebViewLicensePreferenceController
+11-27 19:22:50.707  4953  4953 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+11-27 19:22:50.710  4953  4953 I AndroidRuntime: Using default boot image
+11-27 19:22:50.710  4953  4953 I AndroidRuntime: Leaving lock profiling enabled
+11-27 19:22:50.793  4953  4953 D nativeloader: InitDefaultPublicLibraries for_preload=1: libandroid.so:libaaudio.so:libamidi.so:libbinder_ndk.so:libc.so:libcamera2ndk.so:libdl.so:libEGL.so:libGLESv1_CM.so:libGLESv2.so:libGLESv3.so:libicu.so:libicui18n.so:libicuuc.so:libjnigraphics.so:liblog.so:libmediandk.so:libm.so:libnativehelper.so:libnativewindow.so:libOpenMAXAL.so:libOpenSLES.so:libRS.so:libstdc++.so:libsync.so:libvulkan.so:libwebviewchromium_plat_support.so:libz.so
+11-27 19:22:50.863  4953  4953 D AndroidRuntime: Calling main entry com.android.commands.uiautomator.Launcher
+11-27 19:22:51.103   522   572 I AppsFilter: interaction: PackageSetting{a01a444 com.rado.aimoderator/10192} -> PackageSetting{d510781 com.google.android.googlequicksearchbox/10132} BLOCKED
+11-27 19:22:51.103   522   572 I AppsFilter: interaction: PackageSetting{a01a444 com.rado.aimoderator/10192} -> PackageSetting{a8fb026 com.google.android.apps.messaging/10129} BLOCKED
+11-27 19:22:51.103   522   572 I AppsFilter: interaction: PackageSetting{a01a444 com.rado.aimoderator/10192} -> PackageSetting{a3dc467 com.google.android.as/10125} BLOCKED
+11-27 19:22:51.103   522   572 I AppsFilter: interaction: PackageSetting{a01a444 com.rado.aimoderator/10192} -> PackageSetting{cce3214 com.google.android.contacts/10154} BLOCKED
+11-27 19:22:51.180  1047  1065 D PrefCtrlListHelper: Could not find Context-only controller for pref: com.android.settings.deviceinfo.legal.WebViewLicensePreferenceController
+11-27 19:22:52.058  4953  4953 D AndroidRuntime: Shutting down VM
+11-27 19:22:54.186  2385  2436 I ado.aimoderator: Background young concurrent copying GC freed 82319(3344KB) AllocSpace objects, 6(276KB) LOS objects, 30% free, 7486KB/10MB, paused 40us,34us total 140.273ms
+11-27 19:22:54.530  2385  2897 W ado.aimoderator: Long monitor contention with owner ThreadPoolForeg (2823) at org.chromium.net.AndroidCertVerifyResult OB0.h(byte[][], java.lang.String, java.lang.String)(chromium-TrichromeWebViewGoogle6432.apk-stable-567263637:242) waiters=1 in java.security.cert.X509Certificate OB0.b(byte[]) for 221ms
+11-27 19:22:55.602  2385  2385 I chromium: [INFO:CONSOLE(5)] "Reflect is already polyfilled.", source: https://lf16-tiktok-web.tiktokcdn-us.com/obj/tiktok-web-tx/tiktok/webapp/login/experimental/webapp-login-page/static/js/webapp-login-page.e1839c7c.js (5)
+11-27 19:22:55.985  2385  2385 I chromium: [INFO:CONSOLE(1)] "[slardar] pluginPathPrefix fallback to SlardarPluginPathPrefixVGeoMap.us: https://lf16-cdn-tos.tiktokcdn-us.com/obj/static-tx/slardar/fe/sdk-web/plugins", source: https://lf16-tiktok-web.tiktokcdn-us.com/obj/tiktok-web-tx/tiktok/webapp/login/experimental/webapp-login-page/static/js/biz-shared-init.78830552.js (1)
+11-27 19:22:56.088  2385  2385 I chromium: [INFO:CONSOLE(1)] "[object DOMException]", source: https://lf16-tiktok-web.tiktokcdn-us.com/obj/tiktok-web-tx/tiktok/webapp/login/experimental/webapp-login-page/static/js/biz-login-init.53dbfdba.js (1)
+11-27 19:22:56.117  2385  2385 I chromium: [INFO:CONSOLE(1)] "[i18n] missing key en WebApp_Login Log in or sign up for an account on TikTok. Start watching to discover real people and real videos that will make your day. Log in or sign up for an account on TikTok. Start watching to discover real people and real videos that will make your day.", source: https://lf16-tiktok-web.tiktokcdn-us.com/obj/tiktok-web-tx/tiktok/webapp/login/experimental/webapp-login-page/static/js/biz-common-lib.7bc5ec84.js (1)
+11-27 19:22:56.473  2385  2385 I chromium: [INFO:CONSOLE(45)] "Error: Unable to determine theme from timezone. Falling back to local time-based method. Error: Timezone "UTC" not found", source: https://lf16-tiktok-web.tiktokcdn-us.com/obj/tiktok-web-tx/tiktok/webapp/login/experimental/webapp-login-page/static/js/webapp-login-page.e1839c7c.js (45)
+11-27 19:22:56.799  2385  2385 I chromium: [INFO:CONSOLE(45)] "Error: Unable to determine theme from timezone. Falling back to local time-based method. Error: Timezone "UTC" not found", source: https://lf16-tiktok-web.tiktokcdn-us.com/obj/tiktok-web-tx/tiktok/webapp/login/experimental/webapp-login-page/static/js/webapp-login-page.e1839c7c.js (45)
+11-27 19:22:56.873  2385  2385 I chromium: [INFO:CONSOLE(1)] "%c %s color: yellow; background-color: black; [instance: default] appid: 1988, userInfo:{"user_unique_id":"7712933931058988575","user_type":12,"user_is_login":false,"device_id":"7712933931058988575"}", source: https://lf16-tiktok-web.tiktokcdn-us.com/obj/tiktok-web-tx/tiktok/webapp/login/experimental/webapp-login-page/static/js/npm-tea.f2519f28.js (1)
+11-27 19:22:56.873  2385  2385 I chromium: [INFO:CONSOLE(1)] "%c %s color: yellow; background-color: black; [instance: default] appid: 1988, sdk is ready, version is 5.3.17, you can report now !!!", source: https://lf16-tiktok-web.tiktokcdn-us.com/obj/tiktok-web-tx/tiktok/webapp/login/experimental/webapp-login-page/static/js/npm-tea.f2519f28.js (1)
+11-27 19:22:57.524  2385  2385 I chromium: [INFO:CONSOLE(0)] "Access to XMLHttpRequest at 'https://libra16-normal-useast8.tiktokv.us/service/2/abtest_config/' from origin 'https://www.tiktok.com' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource.", source: https://www.tiktok.com/login (0)
+11-27 19:22:57.931  2385  2385 I chromium: [INFO:CONSOLE(1)] ".", source: https://lf16-tiktok-web.tiktokcdn-us.com/obj/tiktok-web-tx/webmssdk/2.0.0.569/webmssdk.js (1)
+11-27 19:22:57.995  2385  2385 I chromium: [INFO:CONSOLE(1)] "Error", source: https://lf16-tiktok-web.tiktokcdn-us.com/obj/tiktok-web-tx/webmssdk/2.0.0.569/webmssdk.js (1)
+11-27 19:22:58.000  2385  2385 I chromium: [INFO:CONSOLE(1)] "Error", source: https://lf16-tiktok-web.tiktokcdn-us.com/obj/tiktok-web-tx/webmssdk/2.0.0.569/webmssdk.js (1)
+11-27 19:22:58.176  2385  2385 I chromium: [INFO:CONSOLE(1)] "Error", source: https://lf16-tiktok-web.tiktokcdn-us.com/obj/tiktok-web-tx/webmssdk/2.0.0.569/webmssdk.js (1)
+11-27 19:22:58.178  2385  2385 I chromium: [INFO:CONSOLE(1)] "Error", source: https://lf16-tiktok-web.tiktokcdn-us.com/obj/tiktok-web-tx/webmssdk/2.0.0.569/webmssdk.js (1)
+11-27 19:22:58.263  2385  2385 I chromium: [INFO:CONSOLE(1)] "Error", source: https://lf16-tiktok-web.tiktokcdn-us.com/obj/tiktok-web-tx/webmssdk/2.0.0.569/webmssdk.js (1)
+11-27 19:22:58.265  2385  2385 I chromium: [INFO:CONSOLE(1)] "Error", source: https://lf16-tiktok-web.tiktokcdn-us.com/obj/tiktok-web-tx/webmssdk/2.0.0.569/webmssdk.js (1)
+11-27 19:22:58.320  2385  2385 I chromium: [INFO:CONSOLE(1)] "%c %s color: yellow; background-color: black; [instance: cookie_banner_tea_sdk] appid: 345918, userInfo:{"user_unique_id":"7712933946648184333","web_id":"7712933946648184333"}", source: https://lf16-tiktok-web.tiktokcdn-us.com/obj/tiktok-web-tx/webmssdk/2.0.0.569/webmssdk.js (1)
+11-27 19:22:58.325  2385  2385 I chromium: [INFO:CONSOLE(1)] "%c %s color: yellow; background-color: black; [instance: cookie_banner_tea_sdk] appid: 345918, sdk is ready, version is 5.3.17, you can report now !!!", source: https://lf16-tiktok-web.tiktokcdn-us.com/obj/tiktok-web-tx/webmssdk/2.0.0.569/webmssdk.js (1)
+11-27 19:22:58.846   522   608 D ActivityManager: freezing 4871 com.google.android.webview
+11-27 19:22:58.890  2385  2385 I chromium: [INFO:CONSOLE(1)] "Error", source: https://lf16-tiktok-web.tiktokcdn-us.com/obj/tiktok-web-tx/webmssdk/2.0.0.569/webmssdk.js (1)
+11-27 19:22:59.030  2385  2385 I chromium: [INFO:CONSOLE(1)] "Error. Unable to find the experiment:  webapp_auto_dark_mode", source: https://lf16-tiktok-web.tiktokcdn-us.com/obj/tiktok-web-tx/webmssdk/2.0.0.569/webmssdk.js (1)
+11-27 19:22:59.522  2385  2385 I chromium: [INFO:CONSOLE(1)] "Error", source: https://lf16-tiktok-web.tiktokcdn-us.com/obj/tiktok-web-tx/webmssdk/2.0.0.569/webmssdk.js (1)
+11-27 19:22:59.523  2385  2385 I chromium: [INFO:CONSOLE(1)] "Error. Unable to find the experiment:  webapp_auto_dark_mode", source: https://lf16-tiktok-web.tiktokcdn-us.com/obj/tiktok-web-tx/webmssdk/2.0.0.569/webmssdk.js (1)
+11-27 19:22:59.817  2385  2385 I chromium: [INFO:CONSOLE(1)] "%c CDN SW  background-color:darkgreen;color:white; Failover state restored: false", source: https://lf16-tiktok-web.tiktokcdn-us.com/obj/tiktok-web-tx/arch/cdn_switch_worker/2.0.0.6/cdn-sw.js (1)
+11-27 19:22:59.821  2385  2385 I chromium: [INFO:CONSOLE(1)] "%c CDN SW  background-color:darkgreen;color:white; Path filters restored: ", source: https://lf16-tiktok-web.tiktokcdn-us.com/obj/tiktok-web-tx/arch/cdn_switch_worker/2.0.0.6/cdn-sw.js (1)
+11-27 19:22:59.942  2385  2385 I chromium: [INFO:CONSOLE(1)] "%c CDN SW  background-color:darkgreen;color:white; Probe success: [object Object]", source: https://lf16-tiktok-web.tiktokcdn-us.com/obj/tiktok-web-tx/arch/cdn_switch_worker/2.0.0.6/cdn-sw.js (1)
+11-27 19:23:01.633  2687  5268 W chromium: [WARNING:codec.cc(466)] Explicitly added H264 constrained baseline to list of supported formats.
+11-27 19:23:01.637  2687  5268 W chromium: [WARNING:media_session.cc(949)] RED codec red is missing an associated payload type.
+11-27 19:23:01.639  2385  2385 I chromium: [INFO:CONSOLE(1)] "Error", source: https://lf16-tiktok-web.tiktokcdn-us.com/obj/tiktok-web-tx/webmssdk_ex/2.0.0.1787/webmssdk_ex.js (1)
+11-27 19:23:01.899   522   572 I AppsFilter: interaction: PackageSetting{a01a444 com.rado.aimoderator/10192} -> PackageSetting{a61eea4 com.google.android.contacts/10154} BLOCKED
+11-27 19:23:02.250  2385  2385 I chromium: [INFO:CONSOLE(1)] "Error", source: https://lf16-tiktok-web.tiktokcdn-us.com/obj/tiktok-web-tx/webmssdk/2.0.0.569/webmssdk.js (1)
+11-27 19:23:02.250  2385  2385 I chromium: [INFO:CONSOLE(1)] "Error", source: https://lf16-tiktok-web.tiktokcdn-us.com/obj/tiktok-web-tx/webmssdk/2.0.0.569/webmssdk.js (1)
+11-27 19:23:02.725  2385  2385 I chromium: [INFO:CONSOLE(1)] "Failed to create WebGPU Context Provider", source: https://lf16-tiktok-web.tiktokcdn-us.com/obj/tiktok-web-tx/webmssdk_ex/2.0.0.1787/webmssdk_ex.js (1)
+11-27 19:23:02.747  2687  5268 W chromium: [WARNING:codec.cc(466)] Explicitly added H264 constrained baseline to list of supported formats.
+11-27 19:23:02.748  2687  5268 W chromium: [WARNING:media_session.cc(949)] RED codec red is missing an associated payload type.
+11-27 19:23:02.958  2385  2385 I chromium: [INFO:CONSOLE(1)] "Error", source: https://lf16-tiktok-web.tiktokcdn-us.com/obj/tiktok-web-tx/webmssdk/2.0.0.569/webmssdk.js (1)
+11-27 19:23:02.958  2385  2385 I chromium: [INFO:CONSOLE(1)] "Error", source: https://lf16-tiktok-web.tiktokcdn-us.com/obj/tiktok-web-tx/webmssdk/2.0.0.569/webmssdk.js (1)
+11-27 19:23:08.517  5464  5464 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+11-27 19:23:08.534  5464  5464 I AndroidRuntime: Using default boot image
+11-27 19:23:08.534  5464  5464 I AndroidRuntime: Leaving lock profiling enabled
+11-27 19:23:08.730  5464  5464 D nativeloader: InitDefaultPublicLibraries for_preload=1: libandroid.so:libaaudio.so:libamidi.so:libbinder_ndk.so:libc.so:libcamera2ndk.so:libdl.so:libEGL.so:libGLESv1_CM.so:libGLESv2.so:libGLESv3.so:libicu.so:libicui18n.so:libicuuc.so:libjnigraphics.so:liblog.so:libmediandk.so:libm.so:libnativehelper.so:libnativewindow.so:libOpenMAXAL.so:libOpenSLES.so:libRS.so:libstdc++.so:libsync.so:libvulkan.so:libwebviewchromium_plat_support.so:libz.so
+11-27 19:23:08.813  5464  5464 D AndroidRuntime: Calling main entry com.android.commands.uiautomator.Launcher
+11-27 19:23:10.001  5464  5464 D AndroidRuntime: Shutting down VM
+11-27 19:23:12.634   522   572 I AppsFilter: interaction: PackageSetting{a01a444 com.rado.aimoderator/10192} -> PackageSetting{c05b842 com.google.android.contacts/10154} BLOCKED
+11-27 19:23:14.092  5750  5750 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+11-27 19:23:14.095  5750  5750 I AndroidRuntime: Using default boot image
+11-27 19:23:14.095  5750  5750 I AndroidRuntime: Leaving lock profiling enabled
+11-27 19:23:14.182  5750  5750 D nativeloader: InitDefaultPublicLibraries for_preload=1: libandroid.so:libaaudio.so:libamidi.so:libbinder_ndk.so:libc.so:libcamera2ndk.so:libdl.so:libEGL.so:libGLESv1_CM.so:libGLESv2.so:libGLESv3.so:libicu.so:libicui18n.so:libicuuc.so:libjnigraphics.so:liblog.so:libmediandk.so:libm.so:libnativehelper.so:libnativewindow.so:libOpenMAXAL.so:libOpenSLES.so:libRS.so:libstdc++.so:libsync.so:libvulkan.so:libwebviewchromium_plat_support.so:libz.so
+11-27 19:23:14.221  5750  5750 D AndroidRuntime: Calling main entry com.android.commands.uiautomator.Launcher
+11-27 19:23:15.335  5750  5750 D AndroidRuntime: Shutting down VM
+11-27 19:23:16.250   522  1737 I ActivityManager: Background started FGS: Allowed [callingPackage: com.rado.aimoderator; callingUid: 10192; uidState: TOP ; uidBFSL: [BFSL]; intent: Intent { cmp=com.rado.aimoderator/.KeepAliveService }; code:PROC_STATE_TOP; tempAllowListReason:<null>; targetSdkVersion:35; callerTargetSdkVersion:35; startForegroundCount:0; bindFromPackage:null: isBindService:false]
+11-27 19:23:22.544   522   572 I AppsFilter: interaction: PackageSetting{a01a444 com.rado.aimoderator/10192} -> PackageSetting{2fc408 com.google.android.contacts/10154} BLOCKED
+11-27 19:23:29.603   522   572 I AppsFilter: interaction: PackageSetting{a01a444 com.rado.aimoderator/10192} -> PackageSetting{3b1cd00 com.google.android.googlequicksearchbox/10132} BLOCKED
+11-27 19:23:35.184   522   572 I AppsFilter: interaction: PackageSetting{a01a444 com.rado.aimoderator/10192} -> PackageSetting{92eb516 com.google.android.contacts/10154} BLOCKED
+11-27 19:23:36.600  5907  5907 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+11-27 19:23:36.604  5907  5907 I AndroidRuntime: Using default boot image
+11-27 19:23:36.604  5907  5907 I AndroidRuntime: Leaving lock profiling enabled
+11-27 19:23:36.698  5907  5907 D nativeloader: InitDefaultPublicLibraries for_preload=1: libandroid.so:libaaudio.so:libamidi.so:libbinder_ndk.so:libc.so:libcamera2ndk.so:libdl.so:libEGL.so:libGLESv1_CM.so:libGLESv2.so:libGLESv3.so:libicu.so:libicui18n.so:libicuuc.so:libjnigraphics.so:liblog.so:libmediandk.so:libm.so:libnativehelper.so:libnativewindow.so:libOpenMAXAL.so:libOpenSLES.so:libRS.so:libstdc++.so:libsync.so:libvulkan.so:libwebviewchromium_plat_support.so:libz.so
+11-27 19:23:36.733  5907  5907 D AndroidRuntime: Calling main entry com.android.commands.uiautomator.Launcher
+11-27 19:23:37.842  5907  5907 D AndroidRuntime: Shutting down VM
+11-27 19:23:41.691  2687  5269 E chromium: [ERROR:stun_port.cc(119)] Binding request timed out from [0:0:0:x:x:x:x:x]:47118 (any)
+11-27 19:23:42.957  2687  5269 E chromium: [ERROR:stun_port.cc(119)] Binding request timed out from [0:0:0:x:x:x:x:x]:46376 (any)
