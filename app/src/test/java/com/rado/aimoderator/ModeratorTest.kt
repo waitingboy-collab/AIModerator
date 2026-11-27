@@ -231,4 +231,78 @@ class ModeratorTest {
         assertEquals(1, e.onNewMessages(listOf(ChatRow("x", "идиот")), emptyList()).newFlags.size)
         assertEquals(3, e.snapshot().size)
     }
+
+    // ---------- английски, маски, въпроси, следени, превод ----------
+
+    @Test
+    fun filter_englishMasked() {
+        val f = LocalFilter()
+        assertEquals(Verdict.INSULT, f.check("f*ck you")?.verdict)
+        assertEquals(Verdict.INSULT, f.check("you're a l0ser")?.verdict)
+        assertEquals(Verdict.CHECK, f.check("this is sh!t")?.verdict)
+        assertEquals(Verdict.CHECK, f.check("\$hit stream")?.verdict)
+        assertEquals(Verdict.CHECK, f.check("f u c k this")?.verdict)
+        assertEquals(Verdict.CHECK, f.check("fuuuuck")?.verdict)
+        assertEquals(Verdict.INSULT, f.check("you b!tch")?.verdict)
+        assertEquals(Verdict.INSULT, f.check("a\$\$hole")?.verdict)
+        assertEquals(Verdict.THREAT, f.check("go kill yourself")?.verdict)
+        assertEquals(Verdict.SPAM, f.check("check my bio for free followers")?.verdict)
+        assertEquals(Verdict.HATE, f.check("n***er")?.verdict)
+    }
+
+    @Test
+    fun filter_englishNormalChatIsOk() {
+        val f = LocalFilter()
+        listOf(
+            "hello from London!", "you are amazing", "what song is this?", "as I said, nice",
+            "show me your dog", "I love this stream", "a b", "thanks for the follow", "class is over",
+            "assistant", "Scunthorpe", "I'm so happy"
+        ).forEach { assertNull(it, f.check(it)) }
+    }
+
+    @Test
+    fun important_questionsAndHostMentions() {
+        assertEquals("Въпрос", ModerationEngine.importantReason("where are you from", ""))
+        assertEquals("Въпрос", ModerationEngine.importantReason("Will you play again", ""))
+        assertEquals("Въпрос", ModerationEngine.importantReason("колко е часът", ""))
+        assertEquals("Въпрос", ModerationEngine.importantReason("nice?", ""))
+        assertEquals("Споменава водещия", ModerationEngine.importantReason("hi @Anna_Live 😍", "anna_live"))
+        assertNull(ModerationEngine.importantReason("hello everyone", "anna_live"))
+        assertNull(ModerationEngine.importantReason("nice stream", ""))
+    }
+
+    @Test
+    fun engine_watchlist_host_and_important() {
+        val e = ModerationEngine(EngineSettings(watchlist = setOf("@trollboy"), hostName = "anna_live"), clock = { 1_000L })
+        val u = e.onNewMessages(
+            listOf(
+                ChatRow("trollboy", "hi"),
+                ChatRow("anna_live", "f*ck what?"),
+                ChatRow("emma", "where are you from?"),
+                ChatRow("bob", "fuck you")
+            ),
+            emptyList()
+        )
+        val all = e.snapshot().associateBy { it.user }
+        assertEquals(Verdict.WATCH, all["trollboy"]?.verdict)
+        assertEquals(Verdict.OK, all["anna_live"]?.verdict)
+        assertEquals("", all["anna_live"]?.important)
+        assertEquals("Въпрос", all["emma"]?.important)
+        assertEquals(Verdict.INSULT, all["bob"]?.verdict)
+        assertEquals(listOf("emma"), e.important().map { it.user })
+        assertEquals(setOf("trollboy", "bob"), u.newFlags.map { it.user }.toSet())
+        // за превод: маркираните и въпросите на латиница, само веднъж
+        val jobs = e.takeTranslationJobs(10).map { it.user }.toSet()
+        assertEquals(setOf("emma", "bob"), jobs)
+        assertTrue(e.takeTranslationJobs(10).isEmpty())
+    }
+
+    @Test
+    fun translator_parse() {
+        val body = """[[["Откъде си?","Where are you from?",null,null,10]],null,"en"]"""
+        assertEquals("Откъде си?", Translator.parse(body, "Where are you from?"))
+        assertEquals("", Translator.parse("""[[["здравей","zdravei"]],null,"bg"]""", "zdravei"))
+        assertTrue(Translator.worthTranslating("hello there"))
+        assertTrue(!Translator.worthTranslating("здравей ok"))
+    }
 }

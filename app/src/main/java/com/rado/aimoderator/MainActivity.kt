@@ -300,7 +300,7 @@ private fun LiveTab(tick: Int, showBrowser: Boolean, setShowBrowser: (Boolean) -
                             user = it.trim()
                             ModRepository.update(ModRepository.settings.copy(username = it.trim().removePrefix("@")))
                         },
-                        label = { Text("Твоят TikTok username") },
+                        label = { Text("Username на лайва (твой или на водещия)") },
                         prefix = { Text("@") },
                         singleLine = true,
                         modifier = Modifier.weight(1f)
@@ -369,6 +369,66 @@ private fun LiveTab(tick: Int, showBrowser: Boolean, setShowBrowser: (Boolean) -
 @Composable
 private fun FlagsTab(tick: Int) {
     @Suppress("UNUSED_VARIABLE") val refresh = uiTick.intValue
+    var questions by remember { mutableStateOf(false) }
+    val flaggedCount = remember(tick) { ModRepository.engine.flagged().size }
+    val important = remember(tick) { ModRepository.engine.important() }
+    Column(Modifier.fillMaxSize()) {
+        if (ModRepository.settings.engine.highlightImportant) {
+            Row(Modifier.padding(horizontal = 12.dp), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                FilterChip(selected = !questions, onClick = { questions = false }, label = { Text("Сигнали ($flaggedCount)") })
+                FilterChip(selected = questions, onClick = { questions = true }, label = { Text("Въпроси (${important.size})") })
+            }
+        }
+        Box(Modifier.weight(1f)) {
+            if (questions && ModRepository.settings.engine.highlightImportant) ImportantList(important) else FlaggedList(tick)
+        }
+    }
+}
+
+@Composable
+private fun ImportantList(important: List<ChatMessage>) {
+    if (important.isEmpty()) {
+        Empty("Тук се показват въпросите и коментарите, които споменават водещия, за да не ги изпуснеш в потока.")
+        return
+    }
+    val ctx = LocalContext.current
+    LazyColumn(contentPadding = PaddingValues(12.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        items(important, key = { it.id }) { m ->
+            Card(colors = CardDefaults.cardColors(containerColor = Color.White), shape = RoundedCornerShape(14.dp)) {
+                Column(Modifier.padding(12.dp)) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Surface(color = Cyan.copy(alpha = 0.12f), shape = RoundedCornerShape(8.dp)) {
+                            Text(
+                                m.important, color = Cyan, fontWeight = FontWeight.Bold, fontSize = 13.sp,
+                                modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp)
+                            )
+                        }
+                        Spacer(Modifier.width(8.dp))
+                        Text(m.user, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.weight(1f))
+                        Text(time(m.time), color = Muted, fontSize = 12.sp)
+                    }
+                    Spacer(Modifier.height(6.dp))
+                    Text("„${m.text}“", fontSize = 16.sp)
+                    Translation(m)
+                    FlowRowCompat {
+                        TextButton(onClick = { CopyReceiver.copyToClipboard(ctx, "@${m.user} ") }) { Text("Копирай @име") }
+                        TextButton(onClick = { ModRepository.dismiss(m.id) }) { Text("Отговорено") }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun Translation(m: ChatMessage) {
+    if (m.translation.isNotBlank()) {
+        Text("🇧🇬 ${m.translation}", color = Ink.copy(alpha = 0.75f), fontSize = 14.sp, modifier = Modifier.padding(top = 2.dp))
+    }
+}
+
+@Composable
+private fun FlaggedList(tick: Int) {
     val flagged = remember(tick) { ModRepository.engine.flagged() }
     if (flagged.isEmpty()) {
         Empty(
@@ -404,6 +464,7 @@ private fun FlagCard(m: ChatMessage) {
             }
             Spacer(Modifier.height(6.dp))
             Text("„${m.text}“", fontSize = 16.sp)
+            Translation(m)
             if (m.reason.isNotBlank()) {
                 Text("${m.reason} · ${m.source?.label ?: ""}", color = Muted, fontSize = 13.sp)
             }
@@ -417,6 +478,7 @@ private fun FlagCard(m: ChatMessage) {
                 TextButton(onClick = { CopyReceiver.copyToClipboard(ctx, m.user) }) { Text("Копирай името") }
                 TextButton(onClick = { ModRepository.markOk(m.id) }) { Text("Грешка") }
                 TextButton(onClick = { ModRepository.trust(m.user) }) { Text("Доверен") }
+                if (m.verdict != Verdict.WATCH) TextButton(onClick = { ModRepository.watch(m.user) }) { Text("Следи") }
                 TextButton(onClick = { ModRepository.dismiss(m.id) }) { Text("Скрий") }
             }
             Text(
@@ -469,7 +531,9 @@ private fun MessagesList(tick: Int) {
                 Column(Modifier.weight(1f)) {
                     Text(m.user, fontWeight = FontWeight.SemiBold, fontSize = 13.sp)
                     Text(m.text, fontSize = 15.sp)
+                    Translation(m)
                     val status = when {
+                        m.isImportant && (m.verdict == null || m.verdict == Verdict.OK) -> m.important
                         m.verdict == null -> "AI проверява…"
                         m.verdict == Verdict.OK -> m.reason
                         else -> "${m.verdict?.label}: ${m.reason}"
@@ -679,6 +743,7 @@ private fun SettingsTab(tick: Int) {
     var myName by remember { mutableStateOf(e.myName) }
     var whitelist by remember { mutableStateOf(e.whitelist.joinToString(", ")) }
     var extra by remember { mutableStateOf(e.extraBlocked.joinToString(", ")) }
+    var watch by remember { mutableStateOf(e.watchlist.joinToString(", ")) }
 
     Column(Modifier.verticalScroll(rememberScrollState()).padding(12.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
         Section("Откъде да чете чата") {
@@ -766,6 +831,25 @@ private fun SettingsTab(tick: Int) {
                 onValueChange = { extra = it; setEngine(e.copy(extraBlocked = ModRepository.splitList(it))) },
                 label = { Text("Още забранени думи (със запетая, дума* = всички окончания)") },
                 modifier = Modifier.fillMaxWidth()
+            )
+            OutlinedTextField(
+                value = watch,
+                onValueChange = { watch = it; setEngine(e.copy(watchlist = ModRepository.splitList(it).toSet())) },
+                label = { Text("Следени профили – всяко тяхно съобщение се маркира (със запетая)") },
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
+
+        Section("Чужд език и въпроси") {
+            SwitchRow("Превеждай на български маркираните коментари на чужд език", s.translate) {
+                ModRepository.update(s.copy(translate = it))
+            }
+            SwitchRow("Показвай въпросите и споменаванията на водещия", e.highlightImportant) {
+                setEngine(e.copy(highlightImportant = it))
+            }
+            Text(
+                "Преводът е безплатен, през Google Translate, и се прави само за маркираните и важните коментари. Английските обиди и ругатни се хващат и когато са замаскирани: f*ck, sh!t, f u c k.",
+                color = Muted, fontSize = 12.sp
             )
         }
 

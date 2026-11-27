@@ -7,7 +7,13 @@ data class EngineSettings(
     /** Твоето име в TikTok – твоите съобщения не се проверяват и не се поздравяваш. */
     val myName: String = "",
     val extraBlocked: List<String> = emptyList(),
-    val greet: GreetSettings = GreetSettings()
+    val greet: GreetSettings = GreetSettings(),
+    /** Следени профили – всяко тяхно съобщение се маркира. */
+    val watchlist: Set<String> = emptySet(),
+    /** Водещият на лайва (username от раздел Лайв) – неговите съобщения не се маркират. */
+    val hostName: String = "",
+    /** Показва въпросите и споменаванията на водещия в отделен списък. */
+    val highlightImportant: Boolean = true
 )
 
 /**
@@ -71,7 +77,8 @@ class ModerationEngine(
         val id = nextId++
         var m = ChatMessage(id, row.user, row.text, now)
 
-        val trusted = row.user != "?" && s.whitelist.any { Greeter.key(it) == Greeter.key(row.user) }
+        val trusted = row.user != "?" &&
+            (s.whitelist.any { Greeter.key(it) == Greeter.key(row.user) } || isHost(row.user))
         if (trusted) {
             m = m.copy(verdict = Verdict.OK, source = Source.WHITELIST)
         } else {
@@ -89,6 +96,18 @@ class ModerationEngine(
                 s.ai.enabled -> aiQueue.addLast(id) // verdict = null → чака AI
                 else -> m = m.copy(verdict = Verdict.OK, source = Source.FILTER)
             }
+            if (isWatched(row.user)) {
+                val cur = m.verdict
+                if (cur == null || cur.severity < Verdict.WATCH.severity) {
+                    m = m.copy(verdict = Verdict.WATCH, reason = "Следен профил", source = Source.RULE)
+                    aiQueue.remove(id)
+                } else {
+                    m = m.copy(reason = m.reason + " · следен профил")
+                }
+            }
+        }
+        if (!m.isFlagged && s.highlightImportant && !isHost(row.user)) {
+            importantReason(row.text, s.hostName)?.let { m = m.copy(important = it) }
         }
         messages[id] = m
         trim()
@@ -152,6 +171,12 @@ class ModerationEngine(
 
     private fun key(r: ChatRow) = r.user + "\u0001" + r.text
 
+    private fun isHost(user: String) =
+        settings.hostName.isNotBlank() && Greeter.key(user.removePrefix("@")) == Greeter.key(settings.hostName.removePrefix("@"))
+
+    private fun isWatched(user: String) =
+        user != "?" && settings.watchlist.any { Greeter.key(it.removePrefix("@")) == Greeter.key(user.removePrefix("@")) }
+
     private fun isMe(user: String) =
         settings.myName.isNotBlank() && Greeter.key(user.removePrefix("@")) == Greeter.key(settings.myName.removePrefix("@"))
 
@@ -205,10 +230,16 @@ class ModerationEngine(
                 return@forEachIndexed
             }
             val wasFlagged = cur.isFlagged
-            val updated = when {
+            var updated = when {
                 r.verdict == Verdict.OK && cur.source == Source.FILTER && cur.verdict != null && cur.verdict != Verdict.OK ->
                     cur.copy(verdict = Verdict.OK, reason = "AI: наред (филтърът сгреши)", source = Source.AI)
                 else -> cur.copy(verdict = r.verdict, reason = r.reason, source = Source.AI)
+            }
+            if (isWatched(updated.user) && (updated.verdict?.severity ?: 0) < Verdict.WATCH.severity) {
+                updated = updated.copy(verdict = Verdict.WATCH, reason = "Следен профил", source = Source.RULE)
+            }
+            if (!updated.isFlagged && updated.important.isEmpty() && settings.highlightImportant && !isHost(updated.user)) {
+                importantReason(updated.text, settings.hostName)?.let { updated = updated.copy(important = it) }
             }
             messages[cur.id] = updated
             if (updated.isFlagged) {
@@ -271,6 +302,32 @@ class ModerationEngine(
     @Synchronized
     fun flagged(): List<ChatMessage> = messages.values.filter { it.isFlagged }.asReversed()
 
+    /** Въпроси и споменавания на водещия (без маркираните). */
+    @Synchronized
+    fun important(): List<ChatMessage> = messages.values.filter { it.isImportant }.asReversed()
+
+    // ---------- превод ----------
+    private val translateTried = HashSet<Long>()
+
+    /** Маркирани и важни съобщения, които още не са пращани за превод. */
+    @Synchronized
+    fun takeTranslationJobs(max: Int = 5): List<ChatMessage> {
+        val out = ArrayList<ChatMessage>()
+        for (m in messages.values.reversed()) {
+            if (out.size >= max) break
+            if ((m.isFlagged || m.isImportant) && m.id !in translateTried && Translator.worthTranslating(m.text)) {
+                translateTried += m.id
+                out += m
+            }
+        }
+        return out
+    }
+
+    @Synchronized
+    fun setTranslation(id: Long, text: String) {
+        messages[id]?.let { messages[id] = it.copy(translation = text) }
+    }
+
     @Synchronized
     fun viewerList(): List<Viewer> = viewers.values.sortedWith(
         compareByDescending<Viewer> { it.flags }.thenByDescending { it.suspiciousName }.thenByDescending { it.messages }
@@ -278,12 +335,45 @@ class ModerationEngine(
 
     @Synchronized
     fun clear() {
-        messages.clear(); viewers.clear(); aiQueue.clear(); seen.clear(); recentlySent.clear()
+        messages.clear(); viewers.clear(); aiQueue.clear(); seen.clear(); recentlySent.clear(); translateTried.clear()
         bots.reset(); greeter.reset()
     }
 
     companion object {
         const val MAX_MESSAGES = 500
         const val MAX_QUEUE = 80
+
+        private val QUESTION_START: Set<String> = listOf(
+            // английски
+            "how", "what", "whats", "when", "where", "wheres", "why", "who", "whos", "which",
+            "can you", "could you", "do you", "did you", "are you", "will you", "would you", "have you",
+            "can i", "is it", "is this", "are u", "do u", "can u",
+            // български
+            "как", "какво", "кога", "къде", "защо", "колко", "кой", "коя", "кое", "кои", "откъде",
+            "може ли", "можеш ли", "имаш ли", "дали",
+            // турски
+            "ne", "nasıl", "neden", "nerede", "kim"
+        ).map { LocalFilter.tokenize(it).joinToString(" ") }.toSet()
+
+        /** Въпрос или споменаване на водещия → кратко обяснение; иначе null. */
+        fun importantReason(text: String, hostName: String): String? {
+            val host = hostName.trim().removePrefix("@").lowercase()
+            if (host.length >= 3) {
+                val lower = text.lowercase()
+                val hostWords = LocalFilter.tokenize(host)
+                val tokens = LocalFilter.tokenize(text)
+                if (lower.contains("@$host") || lower.contains(host) ||
+                    (hostWords.isNotEmpty() && hostWords.all { it in tokens })
+                ) return "Споменава водещия"
+            }
+            if (text.any { it == '?' || it == '¿' || it == '؟' }) return "Въпрос"
+            val tokens = LocalFilter.tokenize(text)
+            if (tokens.size >= 2) {
+                val one = tokens[0]
+                val two = tokens[0] + " " + tokens[1]
+                if (two in QUESTION_START || one in QUESTION_START) return "Въпрос"
+            }
+            return null
+        }
     }
 }
