@@ -27,7 +27,9 @@ data class AppSettings(
     val username: String = "",
     val engine: EngineSettings = EngineSettings(),
     val alerts: AlertSettings = AlertSettings(),
-    val debug: Boolean = false
+    val debug: Boolean = false,
+    /** Превежда на български маркираните и важните коментари на чужд език (Google). */
+    val translate: Boolean = true
 )
 
 /** Какво вижда услугата – за раздел „Проверка“. */
@@ -59,6 +61,8 @@ object ModRepository {
     private var ticker: ScheduledExecutorService? = null
     private var tickFuture: ScheduledFuture<*>? = null
     private val network = Executors.newSingleThreadExecutor()
+    private val translateNet = Executors.newSingleThreadExecutor()
+    @Volatile private var translateInFlight = false
 
     private lateinit var prefs: SharedPreferences
     private lateinit var appContext: Context
@@ -115,7 +119,7 @@ object ModRepository {
         appContext = context.applicationContext
         prefs = appContext.getSharedPreferences("ai_moderator", Context.MODE_PRIVATE)
         settings = load()
-        engine.settings = settings.engine
+        engine.settings = engineSettings(settings)
         aiStatus = if (settings.engine.ai.enabled) AiStatus(AiState.READY) else AiStatus(AiState.OFF, "Няма API ключ – работи само филтърът")
         Alerts.createChannels(appContext)
         initialized = true
@@ -206,9 +210,13 @@ object ModRepository {
     }
 
     // ---------- всяка секунда ----------
+    /** Водещият = username-ът от раздел Лайв (при чужд лайв – името на водещия). */
+    private fun engineSettings(s: AppSettings) = s.engine.copy(hostName = s.username.trim().removePrefix("@"))
+
     private fun tick() {
         try {
             tickAi()
+            tickTranslate()
             tickGreet()
         } catch (_: Throwable) {
         }
@@ -252,6 +260,24 @@ object ModRepository {
                 setAi(AiStatus(AiState.ERROR, e.message ?: "Грешка"))
             } finally {
                 aiInFlight = false
+                changed()
+            }
+        }
+    }
+
+    private fun tickTranslate() {
+        if (!settings.translate || translateInFlight) return
+        val jobs = engine.takeTranslationJobs(5)
+        if (jobs.isEmpty()) return
+        translateInFlight = true
+        translateNet.execute {
+            try {
+                for (m in jobs) {
+                    val t = try { Translator.toBulgarian(m.text) } catch (_: Exception) { "" }
+                    if (t.isNotBlank()) engine.setTranslation(m.id, t)
+                }
+            } finally {
+                translateInFlight = false
                 changed()
             }
         }
@@ -347,11 +373,18 @@ object ModRepository {
         changed()
     }
 
+    /** „Следи“ – добавя профила към следените. */
+    fun watch(user: String) {
+        if (user == "?") return
+        val e = settings.engine
+        update(settings.copy(engine = e.copy(watchlist = e.watchlist + user.removePrefix("@"))))
+    }
+
     fun update(newSettings: AppSettings) {
         val keyChanged = newSettings.engine.ai.apiKey != settings.engine.ai.apiKey ||
             newSettings.engine.ai.model != settings.engine.ai.model
         settings = newSettings
-        engine.settings = newSettings.engine
+        engine.settings = engineSettings(newSettings)
         if (keyChanged) {
             aiPausedUntil = 0L
             aiStatus = if (newSettings.engine.ai.enabled) AiStatus(AiState.READY) else AiStatus(AiState.OFF, "Няма API ключ – работи само филтърът")
@@ -379,7 +412,11 @@ object ModRepository {
             ChatRow("Али", "Merhaba! Nasılsın?"),
             ChatRow("gosho", "покажи се гола"),
             ChatRow("petya", "ела на моя профил, ще ти пратя нещо интересно 😉"),
-            ChatRow("nik", "мамка ти колко си добър в тая игра 😂")
+            ChatRow("nik", "мамка ти колко си добър в тая игра 😂"),
+            ChatRow("jake_uk", "f*ck you, you're a loser"),
+            ChatRow("emma.rose", "Where are you streaming from?"),
+            ChatRow("promo_king", "check my bio for free followers 🔥"),
+            ChatRow("tom", "this stream is s h i t")
         )
         // като истински чат: всеки път се вижда малко повече
         demo.indices.forEach { i ->
@@ -417,7 +454,9 @@ object ModRepository {
             whitelist = splitList(p.getString("whitelist", "")).toSet(),
             myName = p.getString("myName", "") ?: "",
             extraBlocked = splitList(p.getString("extraBlocked", "")),
-            greet = greet
+            greet = greet,
+            watchlist = splitList(p.getString("watchlist", "")).toSet(),
+            highlightImportant = p.getBoolean("highlightImportant", true)
         )
         val alerts = AlertSettings(
             vibrate = p.getBoolean("vibrate", true),
@@ -430,7 +469,8 @@ object ModRepository {
             username = p.getString("username", "") ?: "",
             engine = engine,
             alerts = alerts,
-            debug = p.getBoolean("debug", false)
+            debug = p.getBoolean("debug", false),
+            translate = p.getBoolean("translate", true)
         )
     }
 
@@ -457,6 +497,9 @@ object ModRepository {
             .putBoolean("notify", s.alerts.notify)
             .putInt("minSeverity", s.alerts.minSeverity)
             .putBoolean("debug", s.debug)
+            .putBoolean("translate", s.translate)
+            .putString("watchlist", e.watchlist.joinToString(", "))
+            .putBoolean("highlightImportant", e.highlightImportant)
             .putString("source", s.source.name)
             .putString("username", s.username)
             .apply()

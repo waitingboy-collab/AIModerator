@@ -85,7 +85,7 @@ class GeminiClient(
         fun systemPrompt(settings: AiSettings): String = buildString {
             append(
                 """
-                You are a chat moderation assistant for a TikTok LIVE streamer from Bulgaria.
+                You are a chat moderation assistant for a TikTok LIVE stream. The stream can be Bulgarian or international.
                 You only label comments; you never reply to viewers.
                 Comments can be in Bulgarian (Cyrillic or Latin transliteration), English, Turkish or other languages.
                 Labels:

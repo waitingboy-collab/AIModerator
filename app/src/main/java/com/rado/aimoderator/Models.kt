@@ -6,6 +6,7 @@ enum class Verdict(val label: String, val severity: Int) {
     SPAM("Спам", 1),
     CHECK("Провери", 1),
     BOT("Бот", 2),
+    WATCH("Следен", 2),
     INSULT("Обида", 2),
     SEXUAL("Сексуално", 3),
     HATE("Омраза", 3),
@@ -48,9 +49,14 @@ data class ChatMessage(
     val verdict: Verdict? = null,
     val reason: String = "",
     val source: Source? = null,
-    val dismissed: Boolean = false
+    val dismissed: Boolean = false,
+    /** Не е нарушение, но е важно: въпрос или споменава водещия. Празно = обикновено. */
+    val important: String = "",
+    /** Превод на български (за коментари на чужд език). */
+    val translation: String = ""
 ) {
     val isFlagged: Boolean get() = verdict != null && verdict != Verdict.OK && !dismissed
+    val isImportant: Boolean get() = important.isNotEmpty() && !isFlagged && !dismissed
 }
 
 /** Статистика за един зрител в текущия лайв. */
